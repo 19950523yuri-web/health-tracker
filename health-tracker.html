@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本周健康打卡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        /* 目标选择模块 */
+        .goal-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .goal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .goal-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #e8e8e8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .goal-option:hover {
+            border-color: #4CAF50;
+        }
+
+        .goal-option.selected {
+            border-color: #4CAF50;
+            background: #f1f8f4;
+        }
+
+        .goal-option input[type="radio"] {
+            display: none;
+        }
+
+        .goal-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .goal-text {
+            flex: 1;
+        }
+
+        .goal-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .goal-desc {
+            font-size: 13px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        /* 每日推荐模块 */
+        .daily-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .day-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .current-day {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .food-cards {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+
+        .food-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .food-card {
+            min-width: 140px;
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .food-emoji {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .food-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .food-cal {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .food-benefit {
+            font-size: 11px;
+            color: #4CAF50;
+            margin-top: 6px;
+            padding: 4px 8px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+
+        /* 记录模块 */
+        .track-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .track-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .track-card.warning {
+            animation: shake 0.5s;
+            border: 2px solid #f44336;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .limit-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #f44336;
+            color: white;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .track-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .track-small-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .track-small-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .minus-btn {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .minus-btn:hover:not(:disabled) {
+            background: #ffcdd2;
+        }
+
+        .track-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .track-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .track-count {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .track-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .milktea-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            width: auto;
+            padding: 8px 16px;
+        }
+
+        .milktea-btn:hover {
+            background: #bbdefb;
+        }
+
+        .milktea-btn.over-limit {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .pupu-btn {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .pupu-btn:hover {
+            background: #ffe0b2;
+        }
+
+        .water-btn {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .water-btn:hover {
+            background: #c8e6c9;
+        }
+
+        /* 本周统计 */
+        .stats-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .week-day {
+            text-align: center;
+            padding: 10px 5px;
+            border-radius: 10px;
+            background: #f5f5f5;
+            font-size: 12px;
+        }
+
+        .week-day.completed {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .week-day-label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .week-day.completed .week-day-label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .week-day-icon {
+            font-size: 18px;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 12px;
+            background: #ffebee;
+            color: #c62828;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: #ffcdd2;
+        }
+
+        /* 反馈动画 */
+        .feedback-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            pointer-events: none;
+            animation: popupFloat 1s ease-out forwards;
+            z-index: 1000;
+        }
+
+        @keyframes popupFloat {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -80%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 本周健康打卡</h1>
+
+        <!-- 目标选择 -->
+        <div class="goal-section">
+            <div class="section-title">选择本周目标（5天吃出来）</div>
+            <div class="goal-options">
+                <label class="goal-option selected" data-goal="fatloss">
+                    <input type="radio" name="goal" value="fatloss" checked>
+                    <span class="goal-icon">🔥</span>
+                    <span class="goal-text">
+                        <div class="goal-title">减脂燃脂</div>
+                        <div class="goal-desc">高蛋白低碳水，制造热量缺口</div>
+                    </span>
+                </label>
+                <label class="goal-option" data-goal="sugar">
+                    <input type="radio" name="goal" value="sugar">
+                    <span class="goal-icon">🍬</span>
+                    <span class="goal-text">
+                        <div class="goal-title">控糖维稳</div>
+                        <div class="goal-desc">低GI食物，平稳血糖不犯困</div>
+                    </span>
+                </label>
+                <label class="goal-option" data-goal="weight">
+                    <input type="radio" name="goal" value="weight">
+                    <span class="goal-icon">⚖️</span>
+                    <span class="goal-text">
+                        <div class="goal-title">掉1斤肉</div>
+                        <div class="goal-desc">日均-500大卡，周末验收成果</div>
+                    </span>
+                </label>
+                <label class="goal-option" data-goal="gut">
+                    <input type="radio" name="goal" value="gut">
+                    <span class="goal-icon">🌿</span>
+                    <span class="goal-text">
+                        <div class="goal-title">肠道排毒</div>
+                        <div class="goal-desc">高纤维饮食，噗噗规律通畅</div>
+                    </span>
+                </label>
+                <label class="goal-option" data-goal="water">
+                    <input type="radio" name="goal" value="water">
+                    <span class="goal-icon">💧</span>
+                    <span class="goal-text">
+                        <div class="goal-title">去水肿</div>
+                        <div class="goal-desc">高钾低钠，排水肿脸小一圈</div>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <!-- 每日推荐 -->
+        <div class="daily-section">
+            <div class="day-header">
+                <span class="section-title">今日推荐</span>
+                <div class="day-nav">
+                    <button class="nav-btn" onclick="changeDay(-1)">‹</button>
+                    <span class="current-day" id="currentDay">周一</span>
+                    <button class="nav-btn" onclick="changeDay(1)">›</button>
+                </div>
+            </div>
+            <div class="food-cards" id="foodCards">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+
+        <!-- 记录模块 -->
+        <div class="track-section">
+            <div class="track-card" id="milkteaCard">
+                <div class="track-icon">🧋</div>
+                <div class="track-title">本周奶茶 <small style="color:#999">(限3杯)</small></div>
+                <div class="track-count" id="milkteaCount">0</div>
+                <div class="track-controls">
+                    <button class="track-small-btn minus-btn" onclick="removeMilktea()" id="milkteaMinus" disabled>-</button>
+                    <button class="track-btn milktea-btn" onclick="addMilktea()">+ 喝一杯</button>
+                </div>
+            </div>
+            <div class="track-card">
+                <div class="track-icon">💩</div>
+                <div class="track-title">本周噗噗</div>
+                <div class="track-count" id="pupuCount">0</div>
+                <button class="track-btn pupu-btn" onclick="addPupu()">+ 记一次</button>
+            </div>
+            <div class="track-card">
+                <div class="track-icon">💧</div>
+                <div class="track-title">今日喝水</div>
+                <div class="track-count" id="waterCount">0</div>
+                <div class="track-controls">
+                    <button class="track-small-btn minus-btn" onclick="removeWater()" id="waterMinus" disabled>-</button>
+                    <button class="track-btn water-btn" onclick="addWater()">+ 一杯</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 本周打卡 -->
+        <div class="stats-section">
+            <div class="section-title">本周打卡</div>
+            <div class="week-grid" id="weekGrid">
+                <!-- 动态生成 -->
+            </div>
+            <button class="reset-btn" onclick="resetWeek()">🔄 重置本周数据</button>
+        </div>
+    </div>
+
+    <script>
+        // 数据存储
+        const MILKTEA_LIMIT = 3;
+
+        let data = {
+            currentGoal: 'fatloss',
+            currentDayIndex: 0,
+            milktea: 0,
+            pupu: 0,
+            water: 0,
+            weekCheck: [false, false, false, false, false, false, false]
+        };
+
+        const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+        // 每日推荐食物数据
+        const foodData = {
+            fatloss: {
+                '周一': [
+                    { emoji: '🥚', name: '水煮蛋', cal: '70卡', benefit: '高蛋白' },
+                    { emoji: '🐔', name: '鸡胸肉', cal: '120卡', benefit: '低脂饱腹' },
+                    { emoji: '🥦', name: '西兰花', cal: '30卡', benefit: '高纤维' },
+                    { emoji: '🥑', name: '牛油果', cal: '80卡', benefit: '好脂肪' }
+                ],
+                '周二': [
+                    { emoji: '🐟', name: '三文鱼', cal: '150卡', benefit: 'Omega-3' },
+                    { emoji: '🥗', name: '生菜沙拉', cal: '25卡', benefit: '超低卡' },
+                    { emoji: '🥚', name: '鸡蛋白', cal: '35卡', benefit: '纯蛋白' },
+                    { emoji: '🥒', name: '黄瓜', cal: '15卡', benefit: '消肿' }
+                ],
+                '周三': [
+                    { emoji: '🦐', name: '白灼虾', cal: '100卡', benefit: '高蛋白' },
+                    { emoji: '🥬', name: '菠菜', cal: '20卡', benefit: '补铁' },
+                    { emoji: '🍄', name: '金针菇', cal: '30卡', benefit: '刷脂' },
+                    { emoji: '🥚', name: '茶叶蛋', cal: '75卡', benefit: '便携' }
+                ],
+                '周四': [
+                    { emoji: '🐮', name: '牛肉片', cal: '130卡', benefit: '增肌' },
+                    { emoji: '🥦', name: '芦笋', cal: '25卡', benefit: '抗氧化' },
+                    { emoji: '🍅', name: '小番茄', cal: '20卡', benefit: '维C' },
+                    { emoji: '🥚', name: '溏心蛋', cal: '75卡', benefit: '满足' }
+                ],
+                '周五': [
+                    { emoji: '🐟', name: '鳕鱼', cal: '90卡', benefit: '超嫩' },
+                    { emoji: '🥗', name: '混合沙拉', cal: '40卡', benefit: '丰富' },
+                    { emoji: '🥑', name: '牛油果', cal: '80卡', benefit: '好脂肪' },
+                    { emoji: '🥚', name: '蛋白棒', cal: '150卡', benefit: '便捷' }
+                ],
+                '周六': [
+                    { emoji: '🦑', name: '鱿鱼圈', cal: '80卡', benefit: '高蛋白' },
+                    { emoji: '🥬', name: '油菜', cal: '20卡', benefit: '清肠' },
+                    { emoji: '🍄', name: '杏鲍菇', cal: '35卡', benefit: '饱腹' },
+                    { emoji: '🥜', name: '巴旦木', cal: '60卡', benefit: '10颗' }
+                ],
+                '周日': [
+                    { emoji: '🐔', name: '去皮鸡腿', cal: '140卡', benefit: '解馋' },
+                    { emoji: '🥗', name: '大拌菜', cal: '50卡', benefit: '清爽' },
+                    { emoji: '🥚', name: '蒸蛋羹', cal: '80卡', benefit: '嫩滑' },
+                    { emoji: '🥒', name: '拍黄瓜', cal: '20卡', benefit: '开胃' }
+                ]
+            },
+            sugar: {
+                '周一': [
+                    { emoji: '🌾', name: '燕麦粥', cal: '120卡', benefit: '低GI' },
+                    { emoji: '🥚', name: '水煮蛋', cal: '70卡', benefit: '稳血糖' },
+                    { emoji: '🥬', name: '油麦菜', cal: '20卡', benefit: '高纤维' },
+                    { emoji: '🫘', name: '豆腐', cal: '80卡', benefit: '植物蛋白' }
+                ],
+                '周二': [
+                    { emoji: '🍠', name: '紫薯', cal: '100卡', benefit: '花青素' },
+                    { emoji: '🥛', name: '无糖豆浆', cal: '45卡', benefit: '无添加糖' },
+                    { emoji: '🥦', name: '花椰菜', cal: '30卡', benefit: '低碳水' },
+                    { emoji: '🐟', name: '清蒸鱼', cal: '100卡', benefit: '高蛋白' }
+                ],
+                '周三': [
+                    { emoji: '🌽', name: '甜玉米', cal: '85卡', benefit: '粗粮' },
+                    { emoji: '🥚', name: '茶叶蛋', cal: '75卡', benefit: '便携' },
+                    { emoji: '🥗', name: '生菜', cal: '15卡', benefit: '随便吃' },
+                    { emoji: '🦐', name: '白灼虾', cal: '100卡', benefit: '鲜甜' }
+                ],
+                '周四': [
+                    { emoji: '🎃', name: '南瓜', cal: '60卡', benefit: '饱腹感' },
+                    { emoji: '🥛', name: '无糖酸奶', cal: '70卡', benefit: '益生菌' },
+                    { emoji: '🥬', name: '空心菜', cal: '20卡', benefit: '高钙' },
+                    { emoji: '🐔', name: '白切鸡', cal: '120卡', benefit: '清淡' }
+                ],
+                '周五': [
+                    { emoji: '🍚', name: '糙米饭', cal: '130卡', benefit: '慢升糖' },
+                    { emoji: '🥗', name: '拌豆腐', cal: '90卡', benefit: '清爽' },
+                    { emoji: '🥦', name: '西兰花', cal: '30卡', benefit: '维C' },
+                    { emoji: '🐟', name: '秋刀鱼', cal: '110卡', benefit: '好脂肪' }
+                ],
+                '周六': [
+                    { emoji: '🥣', name: '藜麦饭', cal: '120卡', benefit: '全蛋白' },
+                    { emoji: '🥚', name: '荷包蛋', cal: '90卡', benefit: '煎一下' },
+                    { emoji: '🥬', name: '小白菜', cal: '18卡', benefit: '嫩' },
+                    { emoji: '🦑', name: '鱿鱼', cal: '80卡', benefit: '低脂' }
+                ],
+                '周日': [
+                    { emoji: '🍠', name: '红薯', cal: '90卡', benefit: '通便' },
+                    { emoji: '🥛', name: '牛奶', cal: '65卡', benefit: '补钙' },
+                    { emoji: '🥗', name: '凉拌菜', cal: '40卡', benefit: '周末轻食' },
+                    { emoji: '🐮', name: '酱牛肉', cal: '130卡', benefit: '高蛋白' }
+                ]
+            },
+            weight: {
+                '周一': [
+                    { emoji: '🥒', name: '黄瓜', cal: '15卡', benefit: '随便吃' },
+                    { emoji: '🥚', name: '鸡蛋', cal: '70卡', benefit: '2个管饱' },
+                    { emoji: '🍅', name: '番茄', cal: '20卡', benefit: '酸甜' },
+                    { emoji: '🥬', name: '生菜', cal: '15卡', benefit: '填肚子' }
+                ],
+                '周二': [
+                    { emoji: '🥦', name: '西兰花', cal: '30卡', benefit: '吃到撑' },
+                    { emoji: '🐔', name: '鸡胸肉', cal: '120卡', benefit: '主力蛋白' },
+                    { emoji: '🍄', name: '蘑菇', cal: '25卡', benefit: '鲜' },
+                    { emoji: '🥒', name: '冬瓜', cal: '12卡', benefit: '超低卡' }
+                ],
+                '周三': [
+                    { emoji: '🥗', name: '大拌菜', cal: '50卡', benefit: '一大盆' },
+                    { emoji: '🦐', name: '虾仁', cal: '85卡', benefit: '高蛋白低脂' },
+                    { emoji: '🥬', name: '菠菜', cal: '20卡', benefit: '营养' },
+                    { emoji: '🥚', name: '蛋白', cal: '35卡', benefit: '纯蛋白' }
+                ],
+                '周四': [
+                    { emoji: '🌽', name: '玉米', cal: '85卡', benefit: '一根顶饱' },
+                    { emoji: '🐟', name: '鱼片', cal: '95卡', benefit: '嫩滑' },
+                    { emoji: '🥒', name: '拍黄瓜', cal: '20卡', benefit: '开胃' },
+                    { emoji: '🥚', name: '水波蛋', cal: '70卡', benefit: '流心' }
+                ],
+                '周五': [
+                    { emoji: '🎃', name: '蒸南瓜', cal: '60卡', benefit: '甜' },
+                    { emoji: '🦑', name: '鱿鱼须', cal: '75卡', benefit: '有嚼劲' },
+                    { emoji: '🥬', name: '油菜', cal: '20卡', benefit: '绿叶菜' },
+                    { emoji: '🥜', name: '花生米', cal: '30卡', benefit: '5颗解馋' }
+                ],
+                '周六': [
+                    { emoji: '🍠', name: '紫薯', cal: '100卡', benefit: '香甜' },
+                    { emoji: '🐔', name: '鸡腿肉', cal: '140卡', benefit: '去皮吃' },
+                    { emoji: '🥗', name: '沙拉', cal: '40卡', benefit: '草料' },
+                    { emoji: '🥒', name: '西葫芦', cal: '18卡', benefit: '低卡' }
+                ],
+                '周日': [
+                    { emoji: '🥣', name: '杂粮粥', cal: '80卡', benefit: '暖胃' },
+                    { emoji: '🥚', name: '茶叶蛋', cal: '75卡', benefit: '有味道' },
+                    { emoji: '🥦', name: '蒜蓉西兰花', cal: '35卡', benefit: '香' },
+                    { emoji: '🐟', name: '清蒸鱼', cal: '100卡', benefit: '周末好料' }
+                ]
+            },
+            gut: {
+                '周一': [
+                    { emoji: '🍠', name: '红薯', cal: '90卡', benefit: '通便神器' },
+                    { emoji: '🥬', name: '芹菜', cal: '20卡', benefit: '粗纤维' },
+                    { emoji: '🥣', name: '燕麦', cal: '120卡', benefit: '可溶性纤维' },
+                    { emoji: '🍌', name: '熟香蕉', cal: '90卡', benefit: '润肠' }
+                ],
+                '周二': [
+                    { emoji: '🌽', name: '玉米', cal: '85卡', benefit: '粗粮' },
+                    { emoji: '🥬', name: '韭菜', cal: '30卡', benefit: '通便' },
+                    { emoji: '🥛', name: '酸奶', cal: '70卡', benefit: '益生菌' },
+                    { emoji: '🍎', name: '苹果', cal: '60卡', benefit: '果胶' }
+                ],
+                '周三': [
+                    { emoji: '🎃', name: '南瓜', cal: '60卡', benefit: '好消化' },
+                    { emoji: '🥬', name: '空心菜', cal: '20卡', benefit: '粗纤维' },
+                    { emoji: '🫘', name: '红豆', cal: '100卡', benefit: '膳食纤维' },
+                    { emoji: '🍐', name: '雪梨', cal: '55卡', benefit: '水分多' }
+                ],
+                '周四': [
+                    { emoji: '🍠', name: '紫薯', cal: '100卡', benefit: '花青素+纤维' },
+                    { emoji: '🥦', name: '西兰花', cal: '30卡', benefit: '保护肠道' },
+                    { emoji: '🥣', name: '小米粥', cal: '90卡', benefit: '养胃' },
+                    { emoji: '🥝', name: '猕猴桃', cal: '50卡', benefit: '维C通便' }
+                ],
+                '周五': [
+                    { emoji: '🌾', name: '糙米', cal: '130卡', benefit: '全谷物' },
+                    { emoji: '🥬', name: '菠菜', cal: '20卡', benefit: '滑肠' },
+                    { emoji: '🍄', name: '木耳', cal: '30卡', benefit: '清道夫' },
+                    { emoji: '🍑', name: '水蜜桃', cal: '45卡', benefit: '果胶' }
+                ],
+                '周六': [
+                    { emoji: '🥔', name: '土豆', cal: '80卡', benefit: '抗性淀粉' },
+                    { emoji: '🥗', name: '卷心菜', cal: '25卡', benefit: '促进蠕动' },
+                    { emoji: '🫘', name: '绿豆', cal: '95卡', benefit: '解毒' },
+                    { emoji: '🫐', name: '蓝莓', cal: '40卡', benefit: '益生菌' }
+                ],
+                '周日': [
+                    { emoji: '🍚', name: '杂粮饭', cal: '120卡', benefit: '多种纤维' },
+                    { emoji: '🥬', name: '油麦菜', cal: '20卡', benefit: '通便' },
+                    { emoji: '🍄', name: '香菇', cal: '35卡', benefit: '益生元' },
+                    { emoji: '🥑', name: '牛油果', cal: '80卡', benefit: '好脂肪润肠' }
+                ]
+            },
+            water: {
+                '周一': [
+                    { emoji: '🍌', name: '香蕉', cal: '90卡', benefit: '高钾' },
+                    { emoji: '🥬', name: '芹菜', cal: '20卡', benefit: '排水肿' },
+                    { emoji: '🎃', name: '南瓜', cal: '60卡', benefit: '钾多' },
+                    { emoji: '🍵', name: '红豆薏米', cal: '80卡', benefit: '祛湿' }
+                ],
+                '周二': [
+                    { emoji: '🥝', name: '猕猴桃', cal: '50卡', benefit: '高钾低钠' },
+                    { emoji: '🥒', name: '黄瓜', cal: '15卡', benefit: '95%水分' },
+                    { emoji: '🍉', name: '西瓜', cal: '40卡', benefit: '利尿' },
+                    { emoji: '🌽', name: '玉米须茶', cal: '5卡', benefit: '排水肿' }
+                ],
+                '周三': [
+                    { emoji: '🥑', name: '牛油果', cal: '80卡', benefit: '钾含量超高' },
+                    { emoji: '🍅', name: '番茄', cal: '20卡', benefit: '低钠高钾' },
+                    { emoji: '🥔', name: '土豆', cal: '80卡', benefit: '钾>香蕉' },
+                    { emoji: '🍵', name: '冬瓜茶', cal: '10卡', benefit: '消肿' }
+                ],
+                '周四': [
+                    { emoji: '🍊', name: '橙子', cal: '50卡', benefit: '维C+钾' },
+                    { emoji: '🥬', name: '菠菜', cal: '20卡', benefit: '镁钾丰富' },
+                    { emoji: '🎃', name: '蒸南瓜', cal: '60卡', benefit: '高钾低钠' },
+                    { emoji: '🍵', name: '玉米须水', cal: '0卡', benefit: '天然利尿' }
+                ],
+                '周五': [
+                    { emoji: '🥥', name: '椰子水', cal: '45卡', benefit: '天然电解质' },
+                    { emoji: '🥒', name: '凉拌黄瓜', cal: '20卡', benefit: '清爽' },
+                    { emoji: '🍠', name: '红薯', cal: '90卡', benefit: '钾+纤维' },
+                    { emoji: '🍵', name: '红豆水', cal: '30卡', benefit: '只喝水不吃豆' }
+                ],
+                '周六': [
+                    { emoji: '🍓', name: '草莓', cal: '35卡', benefit: '高钾低糖' },
+                    { emoji: '🥗', name: '生菜沙拉', cal: '20卡', benefit: '高水分' },
+                    { emoji: '🌾', name: '燕麦', cal: '120卡', benefit: '吸水' },
+                    { emoji: '🍵', name: '薏米水', cal: '20卡', benefit: '祛湿神器' }
+                ],
+                '周日': [
+                    { emoji: '🍋', name: '柠檬水', cal: '10卡', benefit: '促代谢' },
+                    { emoji: '🥬', name: '冬瓜', cal: '12卡', benefit: '含水量96%' },
+                    { emoji: '🍌', name: '香蕉片', cal: '80卡', benefit: '钾' },
+                    { emoji: '🍵', name: '普洱', cal: '0卡', benefit: '消脂' }
+                ]
+            }
+        };
+
+        // 初始化
+        function init() {
+            loadData();
+            renderFoods();
+            renderWeekGrid();
+            updateDisplay();
+
+            // 目标选择事件
+            document.querySelectorAll('.goal-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                    data.currentGoal = this.dataset.goal;
+                    saveData();
+                    renderFoods();
+                });
+            });
+        }
+
+        // 渲染食物卡片
+        function renderFoods() {
+            const container = document.getElementById('foodCards');
+            const day = days[data.currentDayIndex];
+            const foods = foodData[data.currentGoal][day];
+
+            container.innerHTML = foods.map(food => `
+                <div class="food-card">
+                    <div class="food-emoji">${food.emoji}</div>
+                    <div class="food-name">${food.name}</div>
+                    <div class="food-cal">${food.cal}</div>
+                    <div class="food-benefit">${food.benefit}</div>
+                </div>
+            `).join('');
+        }
+
+        // 切换日期
+        function changeDay(delta) {
+            data.currentDayIndex = (data.currentDayIndex + delta + 7) % 7;
+            document.getElementById('currentDay').textContent = days[data.currentDayIndex];
+            renderFoods();
+            saveData();
+        }
+
+        // 添加奶茶
+        function addMilktea() {
+            data.milktea++;
+            showFeedback('🧋');
+            updateDisplay();
+            saveData();
+        }
+
+        // 减少奶茶
+        function removeMilktea() {
+            if (data.milktea > 0) {
+                data.milktea--;
+                updateDisplay();
+                saveData();
+            }
+        }
+
+        // 添加噗噗
+        function addPupu() {
+            data.pupu++;
+            showFeedback('💩');
+            // 标记今天打卡
+            data.weekCheck[data.currentDayIndex] = true;
+            updateDisplay();
+            renderWeekGrid();
+            saveData();
+        }
+
+        // 添加喝水
+        function addWater() {
+            data.water++;
+            showFeedback('💧');
+            updateDisplay();
+            saveData();
+        }
+
+        // 减少喝水
+        function removeWater() {
+            if (data.water > 0) {
+                data.water--;
+                updateDisplay();
+                saveData();
+            }
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            document.getElementById('milkteaCount').textContent = data.milktea;
+            document.getElementById('pupuCount').textContent = data.pupu;
+            document.getElementById('waterCount').textContent = data.water;
+
+            // 更新奶茶限额状态
+            const milkteaBtn = document.querySelector('.milktea-btn');
+            const milkteaCard = document.getElementById('milkteaCard');
+            const milkteaMinus = document.getElementById('milkteaMinus');
+
+            milkteaMinus.disabled = data.milktea <= 0;
+
+            if (data.milktea >= MILKTEA_LIMIT) {
+                milkteaBtn.classList.add('over-limit');
+                milkteaBtn.textContent = '⚠️ 超限额';
+                milkteaCard.classList.add('warning');
+                setTimeout(() => milkteaCard.classList.remove('warning'), 500);
+            } else {
+                milkteaBtn.classList.remove('over-limit');
+                milkteaBtn.textContent = '+ 喝一杯';
+            }
+
+            // 更新喝水按钮状态
+            document.getElementById('waterMinus').disabled = data.water <= 0;
+        }
+
+        // 显示反馈动画
+        function showFeedback(emoji) {
+            const popup = document.createElement('div');
+            popup.className = 'feedback-popup';
+            popup.textContent = emoji;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1000);
+        }
+
+        // 渲染周打卡
+        function renderWeekGrid() {
+            const weekDays = ['一', '二', '三', '四', '五', '六', '日'];
+            const container = document.getElementById('weekGrid');
+
+            container.innerHTML = weekDays.map((day, index) => `
+                <div class="week-day ${data.weekCheck[index] ? 'completed' : ''}" onclick="toggleDay(${index})">
+                    <div class="week-day-label">周${day}</div>
+                    <div class="week-day-icon">${data.weekCheck[index] ? '✅' : '○'}</div>
+                </div>
+            `).join('');
+        }
+
+        // 切换打卡状态
+        function toggleDay(index) {
+            data.weekCheck[index] = !data.weekCheck[index];
+            if (data.weekCheck[index]) {
+                showFeedback('✅');
+            }
+            renderWeekGrid();
+            saveData();
+        }
+
+        // 重置
+        function resetWeek() {
+            if (confirm('确定要重置本周所有数据吗？')) {
+                data.milktea = 0;
+                data.pupu = 0;
+                data.water = 0;
+                data.weekCheck = [false, false, false, false, false, false, false];
+                updateDisplay();
+                renderWeekGrid();
+                saveData();
+            }
+        }
+
+        // 保存到localStorage
+        function saveData() {
+            localStorage.setItem('healthTracker', JSON.stringify(data));
+        }
+
+        // 加载数据
+        function loadData() {
+            const saved = localStorage.getItem('healthTracker');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+            // 恢复目标选择状态
+            document.querySelectorAll('.goal-option').forEach(o => {
+                o.classList.toggle('selected', o.dataset.goal === data.currentGoal);
+                o.querySelector('input').checked = o.dataset.goal === data.currentGoal;
+            });
+        }
+
+        // 启动
+        init();
+    </script>
+</body>
+</html>
