@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>本周健康外卖</title>
+    <title>健康食谱与打卡</title>
     <style>
         * {
             margin: 0;
@@ -14,12 +14,13 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
-            padding: 15px;
+            padding-bottom: 80px;
         }
 
         .container {
             max-width: 420px;
             margin: 0 auto;
+            padding: 15px;
         }
 
         h1 {
@@ -29,7 +30,16 @@
             font-size: 20px;
         }
 
-        /* 周导航 */
+        /* Tab内容 */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ========== 食谱Tab ========== */
         .week-nav {
             display: flex;
             justify-content: space-between;
@@ -64,11 +74,6 @@
             color: white;
         }
 
-        .week-day-btn:hover:not(.active) {
-            background: #e8e8e8;
-        }
-
-        /* 外卖区域 */
         .meal-section {
             background: white;
             border-radius: 20px;
@@ -102,29 +107,49 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .refresh-btn:hover {
-            background: #e0e8ff;
-        }
-
-        .refresh-btn.spinning {
-            animation: spin 0.5s ease-out;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* 餐段标题 */
-        .meal-time {
+        .meal-desc {
+            background: linear-gradient(135deg, #f0f4ff, #e8f5e9);
+            border-radius: 12px;
+            padding: 15px;
             margin-bottom: 20px;
         }
 
-        .meal-time:last-child {
-            margin-bottom: 0;
+        .meal-desc-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .meal-desc-text {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .meal-desc-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .meal-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: white;
+            border-radius: 12px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .meal-time {
+            margin-bottom: 20px;
         }
 
         .meal-time-header {
@@ -160,11 +185,8 @@
             background: white;
             border-radius: 12px;
             border: 1px solid #f0f0f0;
-            transition: all 0.2s;
-        }
-
-        .product-item:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: inherit;
         }
 
         .product-image {
@@ -281,117 +303,117 @@
             color: #999;
         }
 
-        /* 打卡区域 */
-        .track-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .track-card {
-            background: white;
-            border-radius: 20px;
-            padding: 18px 10px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .track-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .track-count {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .track-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .track-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .track-btn.minus {
-            background: #f5f5f5;
-            color: #666;
-        }
-
-        .track-btn.minus:hover:not(:disabled) {
-            background: #e0e0e0;
-        }
-
-        .track-btn.plus {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .track-btn.plus:hover {
-            background: #bbdefb;
-        }
-
-        .track-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        /* 水桶 */
-        .water-bucket {
-            position: relative;
-            width: 50px;
-            height: 60px;
-            margin: 0 auto 10px;
-            background: linear-gradient(180deg, #e3f2fd, #bbdefb);
-            border-radius: 5px 5px 10px 10px;
-            border: 2px solid #90caf9;
-            overflow: hidden;
-        }
-
-        .bucket-water {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, #4fc3f7, #0288d1);
-            transition: height 0.3s ease-out;
-        }
-
-        .bucket-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10px;
-            font-weight: 700;
-            color: #01579b;
-            z-index: 10;
-        }
-
-        /* 分享卡片 */
-        .share-section {
+        /* ========== 打卡Tab ========== */
+        .checkin-section {
             background: white;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 15px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
+        .checkin-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .checkin-btn-large {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkin-btn-large.milktea {
+            background: linear-gradient(135deg, #d4a373, #a67c52);
+            color: white;
+        }
+
+        .checkin-btn-large.water {
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            color: white;
+        }
+
+        .checkin-btn-large.pupu {
+            background: linear-gradient(135deg, #8d6e63, #5d4037);
+            color: white;
+        }
+
+        .checkin-btn-large:active {
+            transform: scale(0.95);
+        }
+
+        .checkin-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .checkin-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .checkin-count {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* 周表格 */
+        .week-table-section {
+            margin-bottom: 20px;
+        }
+
+        .week-table-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .week-table {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .week-day-cell {
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #999;
+            position: relative;
+        }
+
+        .week-day-cell.has-data {
+            background: #fff3e0;
+        }
+
+        .week-day-cell .day-label {
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+
+        .week-day-cell .day-icon {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        /* 分享卡片 */
         .share-card {
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 16px;
@@ -463,26 +485,9 @@
             margin-bottom: 10px;
         }
 
-        .checkin-btn {
-            background: #4caf50;
-            color: white;
-        }
-
-        .checkin-btn:hover {
-            background: #45a049;
-        }
-
-        .checkin-btn:disabled {
-            background: #ccc;
-        }
-
-        .share-btn {
+        .share-action-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-        }
-
-        .share-btn:hover {
-            opacity: 0.95;
         }
 
         .reset-btn {
@@ -495,7 +500,49 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 420px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px 20px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
         }
 
         /* 动画 */
@@ -519,168 +566,166 @@
 </head>
 <body>
     <div class="container">
-        <h1>🍱 本周健康外卖</h1>
+        <h1 id="pageTitle">🍱 本周健康食谱</h1>
 
-        <!-- 周导航 -->
-        <div class="week-nav">
-            <div class="week-days" id="weekDays">
-                <button class="week-day-btn active" onclick="selectDay(0)">一</button>
-                <button class="week-day-btn" onclick="selectDay(1)">二</button>
-                <button class="week-day-btn" onclick="selectDay(2)">三</button>
-                <button class="week-day-btn" onclick="selectDay(3)">四</button>
-                <button class="week-day-btn" onclick="selectDay(4)">五</button>
-                <button class="week-day-btn" onclick="selectDay(5)">六</button>
-                <button class="week-day-btn" onclick="selectDay(6)">日</button>
-            </div>
-        </div>
-
-        <!-- 今日外卖推荐 -->
-        <div class="meal-section">
-            <div class="section-header">
-                <div class="section-title" id="dayTitle">周一外卖</div>
-                <button class="refresh-btn" onclick="refreshMeals()">
-                    <span>🔄</span> 换一换
-                </button>
-            </div>
-
-            <!-- 今日饮食作用 -->
-            <div class="meal-desc" style="background: linear-gradient(135deg, #f0f4ff, #e8f5e9); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
-                <div style="font-size: 14px; font-weight: 700; color: #667eea; margin-bottom: 8px; display: flex; align-items: center; gap: 5px;">
-                    <span>📋</span> 今日饮食作用
-                </div>
-                <div style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;" id="mealDesc">
-                    高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。
-                </div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="mealTags">
-                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">🔥 燃脂</span>
-                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">💪 高蛋白</span>
-                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">🥗 低卡</span>
+        <!-- Tab 1: 食谱推荐 -->
+        <div class="tab-content active" id="tab-food">
+            <!-- 周导航 -->
+            <div class="week-nav">
+                <div class="week-days">
+                    <button class="week-day-btn active" onclick="selectDay(0)">一</button>
+                    <button class="week-day-btn" onclick="selectDay(1)">二</button>
+                    <button class="week-day-btn" onclick="selectDay(2)">三</button>
+                    <button class="week-day-btn" onclick="selectDay(3)">四</button>
+                    <button class="week-day-btn" onclick="selectDay(4)">五</button>
+                    <button class="week-day-btn" onclick="selectDay(5)">六</button>
+                    <button class="week-day-btn" onclick="selectDay(6)">日</button>
                 </div>
             </div>
 
-            <!-- 早餐建议 -->
-            <div class="meal-time">
-                <div class="meal-time-header">
-                    <span class="meal-time-icon">🌅</span>
-                    <span class="meal-time-title">早餐建议</span>
+            <!-- 今日食谱 -->
+            <div class="meal-section">
+                <div class="section-header">
+                    <div class="section-title" id="dayTitle">周一食谱</div>
+                    <button class="refresh-btn" onclick="refreshMeals()">🔄 换一换</button>
                 </div>
-                <div class="food-list" id="breakfastList">
-                    <!-- 动态生成 -->
-                </div>
-            </div>
 
-            <!-- 午餐建议 -->
-            <div class="meal-time">
-                <div class="meal-time-header">
-                    <span class="meal-time-icon">☀️</span>
-                    <span class="meal-time-title">午餐建议</span>
+                <div class="meal-desc">
+                    <div class="meal-desc-title">📋 今日饮食作用</div>
+                    <div class="meal-desc-text" id="mealDesc">高蛋白低脂组合，帮助提升代谢...</div>
+                    <div class="meal-desc-tags" id="mealTags">
+                        <span class="meal-tag">🔥 燃脂</span>
+                        <span class="meal-tag">💪 高蛋白</span>
+                    </div>
                 </div>
-                <div class="food-list" id="lunchList">
-                    <!-- 动态生成 -->
-                </div>
-            </div>
 
-            <!-- 晚餐建议 -->
-            <div class="meal-time">
-                <div class="meal-time-header">
-                    <span class="meal-time-icon">🌙</span>
-                    <span class="meal-time-title">晚餐建议</span>
+                <div class="meal-time">
+                    <div class="meal-time-header">
+                        <span class="meal-time-icon">🌅</span>
+                        <span class="meal-time-title">早餐建议</span>
+                    </div>
+                    <div class="food-list" id="breakfastList"></div>
                 </div>
-                <div class="food-list" id="dinnerList">
-                    <!-- 动态生成 -->
+
+                <div class="meal-time">
+                    <div class="meal-time-header">
+                        <span class="meal-time-icon">☀️</span>
+                        <span class="meal-time-title">午餐建议</span>
+                    </div>
+                    <div class="food-list" id="lunchList"></div>
+                </div>
+
+                <div class="meal-time">
+                    <div class="meal-time-header">
+                        <span class="meal-time-icon">🌙</span>
+                        <span class="meal-time-title">晚餐建议</span>
+                    </div>
+                    <div class="food-list" id="dinnerList"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 打卡区域 -->
-        <div class="track-section">
-            <div class="track-card">
-                <div class="track-icon">🧋</div>
-                <div class="track-count" id="milkteaCount">0</div>
-                <div class="track-controls">
-                    <button class="track-btn minus" onclick="changeCount('milktea', -1)" id="milkteaMinus" disabled>−</button>
-                    <button class="track-btn plus" onclick="changeCount('milktea', 1)">+</button>
+        <!-- Tab 2: 打卡 -->
+        <div class="tab-content" id="tab-checkin">
+            <div class="checkin-section">
+                <!-- 打卡按钮 -->
+                <div class="checkin-buttons">
+                    <button class="checkin-btn-large milktea" onclick="doCheckin('milktea')">
+                        <span class="checkin-icon">🧋</span>
+                        <span class="checkin-label">喝奶茶</span>
+                        <span class="checkin-count" id="todayMilktea">0</span>
+                    </button>
+                    <button class="checkin-btn-large water" onclick="doCheckin('water')">
+                        <span class="checkin-icon">💧</span>
+                        <span class="checkin-label">喝水</span>
+                        <span class="checkin-count" id="todayWater">0ml</span>
+                    </button>
+                    <button class="checkin-btn-large pupu" onclick="doCheckin('pupu')">
+                        <span class="checkin-icon">💩</span>
+                        <span class="checkin-label">噗噗</span>
+                        <span class="checkin-count" id="todayPupu">0</span>
+                    </button>
+                </div>
+
+                <!-- 奶茶周表 -->
+                <div class="week-table-section">
+                    <div class="week-table-title">🧋 本周奶茶记录</div>
+                    <div class="week-table" id="milkteaWeekTable"></div>
+                </div>
+
+                <!-- 喝水周表 -->
+                <div class="week-table-section">
+                    <div class="week-table-title">💧 本周喝水记录</div>
+                    <div class="week-table" id="waterWeekTable"></div>
+                </div>
+
+                <!-- 噗噗周表 -->
+                <div class="week-table-section">
+                    <div class="week-table-title">💩 本周噗噗记录</div>
+                    <div class="week-table" id="pupuWeekTable"></div>
                 </div>
             </div>
-            <div class="track-card">
-                <div class="track-icon">💩</div>
-                <div class="track-count" id="pupuCount">0</div>
-                <div class="track-controls">
-                    <button class="track-btn minus" onclick="changeCount('pupu', -1)" id="pupuMinus" disabled>−</button>
-                    <button class="track-btn plus" onclick="changeCount('pupu', 1)">+</button>
+
+            <!-- 分享卡片 -->
+            <div class="checkin-section">
+                <div class="share-card">
+                    <div class="share-title">📸 本周打卡总结</div>
+                    <div class="share-stats">
+                        <div class="share-stat">
+                            <div class="share-stat-icon">🧋</div>
+                            <div class="share-stat-value" id="totalMilktea">0</div>
+                            <div class="share-stat-label">奶茶</div>
+                        </div>
+                        <div class="share-stat">
+                            <div class="share-stat-icon">💧</div>
+                            <div class="share-stat-value" id="totalWater">0</div>
+                            <div class="share-stat-label">喝水(L)</div>
+                        </div>
+                        <div class="share-stat">
+                            <div class="share-stat-icon">💩</div>
+                            <div class="share-stat-value" id="totalPupu">0</div>
+                            <div class="share-stat-label">噗噗</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="track-card">
-                <div class="water-bucket">
-                    <div class="bucket-water" id="bucketWater" style="height: 0%"></div>
-                    <div class="bucket-label" id="bucketLabel">0%</div>
-                </div>
-                <div class="track-count" id="waterCount">0</div>
-                <div class="track-controls">
-                    <button class="track-btn minus" onclick="changeWater(-150)" id="waterMinus" disabled>−</button>
-                    <button class="track-btn plus" onclick="changeWater(150)">+</button>
-                </div>
+                <button class="action-btn share-action-btn" onclick="shareData()">📤 分享打卡</button>
+                <button class="reset-btn" onclick="resetWeek()">🔄 重置本周</button>
             </div>
         </div>
+    </div>
 
-        <!-- 分享卡片 -->
-        <div class="share-section">
-            <div class="share-card">
-                <div class="share-title">📸 今日打卡</div>
-                <div class="share-stats">
-                    <div class="share-stat">
-                        <div class="share-stat-icon">💩</div>
-                        <div class="share-stat-value" id="sharePupu">0</div>
-                        <div class="share-stat-label">噗噗</div>
-                    </div>
-                    <div class="share-stat">
-                        <div class="share-stat-icon">🧋</div>
-                        <div class="share-stat-value" id="shareMilktea">0</div>
-                        <div class="share-stat-label">奶茶</div>
-                    </div>
-                    <div class="share-stat">
-                        <div class="share-stat-icon">💧</div>
-                        <div class="share-stat-value" id="shareWater">0</div>
-                        <div class="share-stat-label">喝水ml</div>
-                    </div>
-                </div>
-                <div class="share-water-bar">
-                    <div class="share-water-fill" id="shareWaterFill" style="width: 0%"></div>
-                </div>
-                <div class="share-water-text">喝水进度 <span id="shareWaterText">0/1500ml</span></div>
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <div class="nav-item active" onclick="switchTab('food')">
+                <span class="nav-icon">🍱</span>
+                <span class="nav-label">食谱</span>
             </div>
-            <button class="action-btn checkin-btn" id="checkinBtn" onclick="doCheckIn()">✅ 今日打卡</button>
-            <button class="action-btn share-btn" onclick="shareData()">📤 分享打卡</button>
-            <button class="reset-btn" onclick="resetAll()">🔄 重置本周</button>
+            <div class="nav-item" onclick="switchTab('checkin')">
+                <span class="nav-icon">✅</span>
+                <span class="nav-label">打卡</span>
+            </div>
         </div>
     </div>
 
     <script>
         // 数据
-        const BUCKET_TOTAL = 1500;
-        const MILKTEA_LIMIT = 3;
-
         let data = {
             currentDay: 0,
-            milktea: 0,
-            pupu: 0,
-            water: 0,
-            checkedDays: [false, false, false, false, false, false, false],
-            todayChecked: false
+            // 每日记录 [周一,周二,周三,周四,周五,周六,周日]
+            milktea: [0, 0, 0, 0, 0, 0, 0],
+            water: [0, 0, 0, 0, 0, 0, 0],
+            pupu: [0, 0, 0, 0, 0, 0, 0]
         };
 
         const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+        const dayLabels = ['一', '二', '三', '四', '五', '六', '日'];
 
-        // 饮食作用数据
-        const mealDescs = [
-            { text: '高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。', tags: ['🔥 燃脂', '💪 高蛋白', '🥗 低卡'] },
-            { text: '控糖维稳食谱，低GI食物组合，平稳血糖不犯困，适合上班族和学生党。', tags: ['🍬 控糖', '🧠 提神', '📊 稳血糖'] },
-            { text: '清肠排毒组合，高纤维食物促进肠道蠕动，帮助噗噗通畅，改善便秘。', tags: ['🌿 排毒', '🌀 清肠', '✨ 轻盈'] },
-            { text: '去水肿配方，高钾低钠食物帮助排出多余水分，让脸小一圈。', tags: ['💧 排水肿', '😊 瘦脸', '⚡ 活力'] },
-            { text: '均衡营养组合，蛋白质碳水脂肪比例均衡，适合日常健康饮食。', tags: ['⚖️ 均衡', '🌈 营养', '💚 健康'] }
-        ];
+        // 奶茶图标池
+        const milkteaIcons = ['🧋', '🥤', '🍵', '☕', '🥛'];
+        const milkteaColors = ['#8B4513', '#D2691E', '#CD853F', '#A0522D', '#6B4423'];
 
-        // 外卖商品数据池
+        // 食谱数据池
         const productPool = {
             breakfast: [
                 { emoji: '🥪', name: '全麦三明治+无糖豆浆套餐', shop: '轻食主义', price: 18.8, originalPrice: 28, deliveryTime: '30分钟', sold: '月售1200+', cal: '320卡', tags: ['高膳食纤维', '低脂轻负担'] },
@@ -708,49 +753,55 @@
             ]
         };
 
-        // 当前显示的商品
-        let currentProducts = {
-            breakfast: [],
-            lunch: [],
-            dinner: []
-        };
+        const mealDescs = [
+            { text: '高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。', tags: ['🔥 燃脂', '💪 高蛋白', '🥗 低卡'] },
+            { text: '控糖维稳食谱，低GI食物组合，平稳血糖不犯困，适合上班族和学生党。', tags: ['🍬 控糖', '🧠 提神', '📊 稳血糖'] },
+            { text: '清肠排毒组合，高纤维食物促进肠道蠕动，帮助噗噗通畅，改善便秘。', tags: ['🌿 排毒', '🌀 清肠', '✨ 轻盈'] },
+            { text: '去水肿配方，高钾低钠食物帮助排出多余水分，让脸小一圈。', tags: ['💧 排水肿', '😊 瘦脸', '⚡ 活力'] },
+            { text: '均衡营养组合，蛋白质碳水脂肪比例均衡，适合日常健康饮食。', tags: ['⚖️ 均衡', '🌈 营养', '💚 健康'] }
+        ];
+
+        let currentMeals = { breakfast: [], lunch: [], dinner: [] };
 
         // 初始化
         function init() {
             loadData();
-            checkNewDay();
-            generateProducts();
-            renderProducts();
-            updateDisplay();
+            generateMeals();
+            renderMeals();
+            renderWeekTables();
+            updateTodayStats();
+            updateTotalStats();
         }
 
-        // 生成随机商品
-        function generateProducts() {
-            const getRandomItems = (arr, count) => {
-                const shuffled = [...arr].sort(() => 0.5 - Math.random());
-                return shuffled.slice(0, count);
-            };
+        // 切换Tab
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-            currentProducts.breakfast = getRandomItems(productPool.breakfast, 2);
-            currentProducts.lunch = getRandomItems(productPool.lunch, 3);
-            currentProducts.dinner = getRandomItems(productPool.dinner, 2);
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            event.currentTarget.classList.add('active');
 
-            // 更新饮食作用
+            document.getElementById('pageTitle').textContent = tab === 'food' ? '🍱 本周健康食谱' : '✅ 健康打卡';
+        }
+
+        // 生成随机食谱
+        function generateMeals() {
+            const getRandom = (arr, count) => [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
+            currentMeals.breakfast = getRandom(productPool.breakfast, 2);
+            currentMeals.lunch = getRandom(productPool.lunch, 3);
+            currentMeals.dinner = getRandom(productPool.dinner, 2);
+
             const desc = mealDescs[Math.floor(Math.random() * mealDescs.length)];
             document.getElementById('mealDesc').textContent = desc.text;
-            document.getElementById('mealTags').innerHTML = desc.tags.map(t => `<span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">${t}</span>`).join('');
+            document.getElementById('mealTags').innerHTML = desc.tags.map(t => `<span class="meal-tag">${t}</span>`).join('');
         }
 
-        // 渲染商品列表
-        function renderProducts() {
-            const renderList = (products, containerId) => {
-                const container = document.getElementById(containerId);
-                container.innerHTML = products.map(p => `
-                    <a href="https://s.taobao.com/search?q=${encodeURIComponent(p.name)}" target="_blank" class="product-item" style="text-decoration: none; color: inherit;">
-                        <div class="product-image">
-                            ${p.emoji}
-                            <span class="product-sold">${p.sold}</span>
-                        </div>
+        // 渲染食谱
+        function renderMeals() {
+            const renderList = (meals, containerId) => {
+                document.getElementById(containerId).innerHTML = meals.map(p => `
+                    <a href="https://s.taobao.com/search?q=${encodeURIComponent(p.name)}" target="_blank" class="product-item">
+                        <div class="product-image">${p.emoji}<span class="product-sold">${p.sold}</span></div>
                         <div class="product-info">
                             <div class="product-title-line">
                                 <span class="product-shop">${p.shop}</span>
@@ -773,131 +824,130 @@
                     </a>
                 `).join('');
             };
-
-            renderList(currentProducts.breakfast, 'breakfastList');
-            renderList(currentProducts.lunch, 'lunchList');
-            renderList(currentProducts.dinner, 'dinnerList');
+            renderList(currentMeals.breakfast, 'breakfastList');
+            renderList(currentMeals.lunch, 'lunchList');
+            renderList(currentMeals.dinner, 'dinnerList');
         }
 
-        // 切换日期
+        // 选择日期
         function selectDay(index) {
             data.currentDay = index;
-            document.querySelectorAll('.week-day-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
-            document.getElementById('dayTitle').textContent = days[index] + '外卖';
-            generateProducts();
-            renderProducts();
+            document.querySelectorAll('.week-day-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+            document.getElementById('dayTitle').textContent = days[index] + '食谱';
+            generateMeals();
+            renderMeals();
             saveData();
         }
 
         // 换一换
         function refreshMeals() {
             const btn = document.querySelector('.refresh-btn');
-            btn.classList.add('spinning');
-            setTimeout(() => btn.classList.remove('spinning'), 500);
-            generateProducts();
-            renderProducts();
-        }
-
-        // 更新显示
-        function updateDisplay() {
-            document.getElementById('milkteaCount').textContent = data.milktea;
-            document.getElementById('pupuCount').textContent = data.pupu;
-            document.getElementById('waterCount').textContent = data.water;
-
-            document.getElementById('milkteaMinus').disabled = data.milktea <= 0;
-            document.getElementById('pupuMinus').disabled = data.pupu <= 0;
-            document.getElementById('waterMinus').disabled = data.water <= 0;
-
-            // 水桶
-            const percent = Math.min((data.water / BUCKET_TOTAL) * 100, 100);
-            document.getElementById('bucketWater').style.height = percent + '%';
-            document.getElementById('bucketLabel').textContent = Math.floor(percent) + '%';
-
-            // 分享卡片
-            document.getElementById('sharePupu').textContent = data.pupu;
-            document.getElementById('shareMilktea').textContent = data.milktea;
-            document.getElementById('shareWater').textContent = data.water;
-            document.getElementById('shareWaterFill').style.width = percent + '%';
-            document.getElementById('shareWaterText').textContent = `${data.water}/${BUCKET_TOTAL}ml`;
-
-            // 打卡按钮
-            document.getElementById('checkinBtn').disabled = data.todayChecked;
-            document.getElementById('checkinBtn').textContent = data.todayChecked ? '✅ 已打卡' : '✅ 今日打卡';
-        }
-
-        // 修改计数
-        function changeCount(type, delta) {
-            if (type === 'milktea') {
-                data.milktea = Math.max(0, data.milktea + delta);
-                if (delta > 0) showFeedback('🧋');
-            } else if (type === 'pupu') {
-                data.pupu = Math.max(0, data.pupu + delta);
-                if (delta > 0) showFeedback('💩');
-            }
-            updateDisplay();
-            saveData();
-        }
-
-        // 修改喝水
-        function changeWater(delta) {
-            data.water = Math.max(0, Math.min(BUCKET_TOTAL, data.water + delta));
-            if (delta > 0) showFeedback('💧');
-            updateDisplay();
-            saveData();
+            btn.style.transform = 'rotate(360deg)';
+            setTimeout(() => btn.style.transform = '', 500);
+            generateMeals();
+            renderMeals();
         }
 
         // 打卡
-        function doCheckIn() {
-            if (!data.todayChecked) {
-                data.todayChecked = true;
-                data.checkedDays[data.currentDay] = true;
-                showFeedback('✅');
-                updateDisplay();
-                saveData();
+        function doCheckin(type) {
+            if (type === 'milktea') {
+                data.milktea[data.currentDay]++;
+                showFeedback('🧋');
+            } else if (type === 'water') {
+                data.water[data.currentDay] += 150;
+                showFeedback('💧');
+            } else if (type === 'pupu') {
+                data.pupu[data.currentDay]++;
+                showFeedback('💩');
             }
+            saveData();
+            renderWeekTables();
+            updateTodayStats();
+            updateTotalStats();
+        }
+
+        // 渲染周表格
+        function renderWeekTables() {
+            const renderTable = (data, containerId, type) => {
+                const icons = {
+                    milktea: ['🧋', '🥤', '🧉', '🍶', '☕'],
+                    water: ['💧', '💦', '🌊', '💎', '🧊'],
+                    pupu: ['💩', '🚽', '🧻', '🚾', '💨']
+                };
+
+                document.getElementById(containerId).innerHTML = dayLabels.map((day, i) => {
+                    const count = data[i];
+                    const hasData = count > 0;
+                    let icon = '';
+
+                    if (hasData) {
+                        // 根据数量或日期选择不同图标
+                        const iconIndex = (i + count) % icons[type].length;
+                        icon = icons[type][iconIndex];
+                    }
+
+                    return `
+                        <div class="week-day-cell ${hasData ? 'has-data' : ''}" onclick="selectDayFromTable(${i})">
+                            <span class="day-label">${day}</span>
+                            ${hasData ? `<span class="day-icon">${icon}</span>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            renderTable(data.milktea, 'milkteaWeekTable', 'milktea');
+            renderTable(data.water.map(w => w > 0 ? 1 : 0), 'waterWeekTable', 'water');
+            renderTable(data.pupu, 'pupuWeekTable', 'pupu');
+        }
+
+        // 从表格选择日期
+        function selectDayFromTable(index) {
+            data.currentDay = index;
+            document.querySelectorAll('.week-day-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+            document.getElementById('dayTitle').textContent = days[index] + '食谱';
+            switchTab('food');
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+            document.querySelectorAll('.nav-item')[1].classList.remove('active');
+        }
+
+        // 更新今日统计
+        function updateTodayStats() {
+            document.getElementById('todayMilktea').textContent = data.milktea[data.currentDay];
+            document.getElementById('todayWater').textContent = data.water[data.currentDay] + 'ml';
+            document.getElementById('todayPupu').textContent = data.pupu[data.currentDay];
+        }
+
+        // 更新本周总计
+        function updateTotalStats() {
+            document.getElementById('totalMilktea').textContent = data.milktea.reduce((a, b) => a + b, 0);
+            document.getElementById('totalWater').textContent = (data.water.reduce((a, b) => a + b, 0) / 1000).toFixed(1);
+            document.getElementById('totalPupu').textContent = data.pupu.reduce((a, b) => a + b, 0);
         }
 
         // 分享
         async function shareData() {
-            const text = `📸 今日健康打卡\n💩 噗噗: ${data.pupu}次\n🧋 奶茶: ${data.milktea}杯\n💧 喝水: ${data.water}/${BUCKET_TOTAL}ml\n\n一起来健康生活吧！`;
+            const totalMilktea = data.milktea.reduce((a, b) => a + b, 0);
+            const totalWater = data.water.reduce((a, b) => a + b, 0);
+            const totalPupu = data.pupu.reduce((a, b) => a + b, 0);
+            const text = `📸 本周健康打卡\n🧋 奶茶: ${totalMilktea}杯\n💧 喝水: ${totalWater}ml\n💩 噗噗: ${totalPupu}次\n\n坚持就是胜利！`;
 
             if (navigator.share) {
-                try {
-                    await navigator.share({ title: '今日健康打卡', text });
-                } catch (e) {}
+                try { await navigator.share({ title: '本周健康打卡', text }); } catch (e) {}
             } else {
                 navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板！'));
             }
         }
 
-        // 重置
-        function resetAll() {
-            if (confirm('确定重置所有数据？')) {
-                data = {
-                    currentDay: 0,
-                    milktea: 0,
-                    pupu: 0,
-                    water: 0,
-                    checkedDays: [false, false, false, false, false, false, false],
-                    todayChecked: false
-                };
-                selectDay(0);
-                updateDisplay();
+        // 重置本周
+        function resetWeek() {
+            if (confirm('确定重置本周所有打卡数据？')) {
+                data.milktea = [0, 0, 0, 0, 0, 0, 0];
+                data.water = [0, 0, 0, 0, 0, 0, 0];
+                data.pupu = [0, 0, 0, 0, 0, 0, 0];
                 saveData();
-            }
-        }
-
-        // 检查新的一天
-        function checkNewDay() {
-            const today = new Date().toDateString();
-            const saved = localStorage.getItem('healthTrackerDate');
-            if (saved !== today) {
-                data.water = 0;
-                data.todayChecked = false;
-                localStorage.setItem('healthTrackerDate', today);
-                saveData();
+                renderWeekTables();
+                updateTodayStats();
+                updateTotalStats();
             }
         }
 
@@ -912,14 +962,12 @@
 
         // 保存加载
         function saveData() {
-            localStorage.setItem('healthTracker', JSON.stringify(data));
+            localStorage.setItem('healthTrackerData', JSON.stringify(data));
         }
 
         function loadData() {
-            const saved = localStorage.getItem('healthTracker');
-            if (saved) {
-                data = { ...data, ...JSON.parse(saved) };
-            }
+            const saved = localStorage.getItem('healthTrackerData');
+            if (saved) data = { ...data, ...JSON.parse(saved) };
         }
 
         // 启动
