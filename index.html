@@ -473,6 +473,185 @@
             font-size: 12px;
         }
 
+        /* 分享图片弹窗 */
+        .share-image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .share-image-modal.active {
+            display: flex;
+        }
+
+        .share-image-content {
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .share-image-card {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .image-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .image-date {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .image-week-section {
+            background: rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .image-week-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        .image-week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .image-day-cell {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+        }
+
+        .image-day-cell.empty {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .image-day-label {
+            font-size: 9px;
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .image-day-icons {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .image-summary-section {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 15px;
+            color: #333;
+        }
+
+        .image-summary-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .image-summary-content {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .image-summary-item {
+            text-align: center;
+        }
+
+        .summary-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .summary-text {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .summary-text strong {
+            color: #333;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .image-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .image-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .image-action-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .image-action-btn span:first-child {
+            font-size: 24px;
+        }
+
+        .image-action-btn.wechat {
+            background: #07c160;
+            color: white;
+        }
+
+        .image-action-btn.save {
+            background: white;
+            color: #333;
+        }
+
         .action-btn {
             width: 100%;
             padding: 14px;
@@ -688,8 +867,62 @@
                         </div>
                     </div>
                 </div>
-                <button class="action-btn share-action-btn" onclick="shareData()">📤 分享打卡</button>
+                <button class="action-btn share-action-btn" onclick="showShareImage()">📤 分享打卡</button>
                 <button class="reset-btn" onclick="resetWeek()">🔄 重置本周</button>
+            </div>
+
+            <!-- 分享图片弹窗 -->
+            <div class="share-image-modal" id="shareImageModal" onclick="closeShareImage(event)">
+                <div class="share-image-content" onclick="event.stopPropagation()">
+                    <!-- 生成的分享图片 -->
+                    <div class="share-image-card" id="shareImageCard">
+                        <div class="image-header">
+                            <div class="image-title">📸 本周健康打卡</div>
+                            <div class="image-date" id="imageDate">1.1-1.7</div>
+                        </div>
+
+                        <!-- 周打卡记录 -->
+                        <div class="image-week-section">
+                            <div class="image-week-title">📅 每日记录</div>
+                            <div class="image-week-grid" id="imageWeekGrid">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 本周总结 -->
+                        <div class="image-summary-section">
+                            <div class="image-summary-title">📊 本周总结</div>
+                            <div class="image-summary-content">
+                                <div class="image-summary-item">
+                                    <span class="summary-icon">🧋</span>
+                                    <span class="summary-text">奶茶 <strong id="imageMilktea">0</strong> 杯</span>
+                                </div>
+                                <div class="image-summary-item">
+                                    <span class="summary-icon">💧</span>
+                                    <span class="summary-text">喝水 <strong id="imageWater">0</strong> L</span>
+                                </div>
+                                <div class="image-image-summary-item">
+                                    <span class="summary-icon">💩</span>
+                                    <span class="summary-text">噗噗 <strong id="imagePupu">0</strong> 次</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="image-footer">健康生活，从每一餐开始 💪</div>
+                    </div>
+
+                    <!-- 底部按钮 -->
+                    <div class="image-actions">
+                        <button class="image-action-btn wechat" onclick="shareToWechat()">
+                            <span>💬</span>
+                            <span>微信分享</span>
+                        </button>
+                        <button class="image-action-btn save" onclick="saveImage()">
+                            <span>💾</span>
+                            <span>保存图片</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -924,18 +1157,79 @@
             document.getElementById('totalPupu').textContent = data.pupu.reduce((a, b) => a + b, 0);
         }
 
-        // 分享
-        async function shareData() {
+        // 显示分享图片
+        function showShareImage() {
+            generateShareImage();
+            document.getElementById('shareImageModal').classList.add('active');
+        }
+
+        // 关闭分享图片
+        function closeShareImage(event) {
+            if (!event || event.target.id === 'shareImageModal') {
+                document.getElementById('shareImageModal').classList.remove('active');
+            }
+        }
+
+        // 生成分享图片内容
+        function generateShareImage() {
+            const dayLabels = ['一', '二', '三', '四', '五', '六', '日'];
+            const totalMilktea = data.milktea.reduce((a, b) => a + b, 0);
+            const totalWater = (data.water.reduce((a, b) => a + b, 0) / 1000).toFixed(1);
+            const totalPupu = data.pupu.reduce((a, b) => a + b, 0);
+
+            // 日期范围
+            const today = new Date();
+            const weekStart = new Date(today.getTime() - today.getDay() * 86400000);
+            const weekEnd = new Date(weekStart.getTime() + 6 * 86400000);
+            document.getElementById('imageDate').textContent =
+                `${weekStart.getMonth() + 1}.${weekStart.getDate()}-${weekEnd.getMonth() + 1}.${weekEnd.getDate()}`;
+
+            // 生成周打卡网格
+            let gridHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const icons = [];
+                if (data.milktea[i] > 0) icons.push('🧋');
+                if (data.water[i] > 0) icons.push('💧');
+                if (data.pupu[i] > 0) icons.push('💩');
+
+                const hasData = icons.length > 0;
+                gridHTML += `
+                    <div class="image-day-cell ${!hasData ? 'empty' : ''}">
+                        <div class="image-day-label">${dayLabels[i]}</div>
+                        <div class="image-day-icons">${icons.join('') || '·'}</div>
+                    </div>
+                `;
+            }
+            document.getElementById('imageWeekGrid').innerHTML = gridHTML;
+
+            // 设置统计数据
+            document.getElementById('imageMilktea').textContent = totalMilktea;
+            document.getElementById('imageWater').textContent = totalWater;
+            document.getElementById('imagePupu').textContent = totalPupu;
+        }
+
+        // 微信分享
+        function shareToWechat() {
             const totalMilktea = data.milktea.reduce((a, b) => a + b, 0);
             const totalWater = data.water.reduce((a, b) => a + b, 0);
             const totalPupu = data.pupu.reduce((a, b) => a + b, 0);
-            const text = `📸 本周健康打卡\n🧋 奶茶: ${totalMilktea}杯\n💧 喝水: ${totalWater}ml\n💩 噗噗: ${totalPupu}次\n\n坚持就是胜利！`;
 
-            if (navigator.share) {
-                try { await navigator.share({ title: '本周健康打卡', text }); } catch (e) {}
+            const text = `📸 本周健康打卡\n\n🧋 奶茶 ${totalMilktea} 杯\n💧 喝水 ${(totalWater / 1000).toFixed(1)} L\n💩 噗噗 ${totalPupu} 次\n\n坚持健康生活每一天！`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('文案已复制！快去微信粘贴分享吧 📤');
+                }).catch(() => {
+                    alert('复制失败，请手动截图分享');
+                });
             } else {
-                navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板！'));
+                alert('请手动截图分享');
             }
+        }
+
+        // 保存图片
+        function saveImage() {
+            alert('📱 请手动截图保存\n\n提示：同时按住电源键和音量键即可截图');
         }
 
         // 重置本周
