@@ -307,6 +307,44 @@
             background: #c8e6c9;
         }
 
+        /* 迷你水桶卡片 */
+        .water-card {
+            padding: 15px 8px;
+        }
+
+        .mini-bucket {
+            position: relative;
+            width: 60px;
+            height: 70px;
+            margin: 5px auto 10px;
+            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 6px 6px 12px 12px;
+            border: 2px solid #90caf9;
+            overflow: hidden;
+        }
+
+        .mini-bucket-water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0288d1 100%);
+            transition: height 0.3s ease-out;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .mini-bucket-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 700;
+            color: #01579b;
+            text-shadow: 0.5px 0.5px 1px rgba(255,255,255,0.8);
+            z-index: 10;
+        }
+
         .track-btn-icon.over-limit {
             background: #ffebee !important;
             color: #c62828 !important;
@@ -418,112 +456,6 @@
         }
 
         /* 水桶样式 */
-        .water-bucket-section {
-            background: #fff;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-
-        .bucket-container {
-            position: relative;
-            width: 120px;
-            height: 160px;
-            margin: 20px auto;
-            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 10px 10px 20px 20px;
-            border: 3px solid #90caf9;
-            overflow: hidden;
-        }
-
-        .bucket-water {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, #4fc3f7 0%, #0288d1 100%);
-            transition: height 0.5s ease-out;
-            border-radius: 0 0 17px 17px;
-        }
-
-        .bucket-water::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 0;
-            right: 0;
-            height: 10px;
-            background: #81d4fa;
-            border-radius: 50%;
-            animation: wave 2s ease-in-out infinite;
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: scaleX(1); }
-            50% { transform: scaleX(1.1); }
-        }
-
-        .bucket-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            font-weight: 700;
-            color: #01579b;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-            z-index: 10;
-        }
-
-        .bucket-scale {
-            position: absolute;
-            right: 5px;
-            top: 10px;
-            bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 10px;
-            color: #0277bd;
-        }
-
-        .bucket-add-btn {
-            background: linear-gradient(135deg, #4fc3f7, #0288d1);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
-        }
-
-        .bucket-add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(2,136,209,0.4);
-        }
-
-        .bucket-add-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .bucket-info {
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        .bucket-info span {
-            color: #0288d1;
-            font-weight: 700;
-        }
-
         /* 分享卡片 */
         .share-card-section {
             background: #fff;
@@ -728,33 +660,17 @@
                     <button class="track-btn-icon pupu-plus" onclick="addPupu()">+</button>
                 </div>
             </div>
-            <div class="track-card">
+            <div class="track-card water-card" id="waterCard">
                 <div class="track-icon">💧</div>
-                <div class="track-count" id="waterCount">0</div>
+                <div class="mini-bucket">
+                    <div class="mini-bucket-water" id="miniBucketWater" style="height: 0%"></div>
+                    <div class="mini-bucket-label" id="miniBucketLabel">0%</div>
+                </div>
                 <div class="track-controls">
-                    <button class="track-btn-icon minus" onclick="removeWater()" id="waterMinus" disabled>−</button>
-                    <button class="track-btn-icon water-plus" onclick="addWater()">+</button>
+                    <button class="track-btn-icon minus" onclick="removeBucketWater()" id="bucketMinus" disabled>−</button>
+                    <button class="track-btn-icon water-plus" onclick="addBucketWater()">+</button>
                 </div>
             </div>
-        </div>
-
-        <!-- 喝水打卡水桶 -->
-        <div class="water-bucket-section">
-            <div class="section-title">💧 喝水打卡</div>
-            <div class="bucket-container">
-                <div class="bucket-water" id="bucketWater" style="height: 0%"></div>
-                <div class="bucket-label" id="bucketLabel">0%</div>
-                <div class="bucket-scale">
-                    <span>1500</span>
-                    <span>1200</span>
-                    <span>900</span>
-                    <span>600</span>
-                    <span>300</span>
-                    <span>0</span>
-                </div>
-            </div>
-            <div class="bucket-info">已喝 <span id="bucketMl">0</span> / 1500 ml</div>
-            <button class="bucket-add-btn" id="bucketAddBtn" onclick="addBucketWater()">+ 喝150ml</button>
         </div>
 
         <!-- 今日分享卡片 -->
@@ -1152,7 +1068,6 @@
         function updateDisplay() {
             document.getElementById('milkteaCount').textContent = data.milktea;
             document.getElementById('pupuCount').textContent = data.pupu;
-            document.getElementById('waterCount').textContent = Math.floor(data.water / 150);
 
             // 更新奶茶限额状态
             const milkteaPlus = document.getElementById('milkteaPlus');
@@ -1184,14 +1099,12 @@
             document.getElementById('checkinBtn').textContent = data.todayChecked ? '✅ 今日已打卡' : '✅ 今日打卡';
         }
 
-        // 更新水桶显示
+        // 更新迷你水桶显示
         function updateBucket() {
             const percent = Math.min((data.water / BUCKET_TOTAL) * 100, 100);
-            document.getElementById('bucketWater').style.height = percent + '%';
-            document.getElementById('bucketLabel').textContent = Math.floor(percent) + '%';
-            document.getElementById('bucketMl').textContent = data.water;
-            document.getElementById('bucketAddBtn').disabled = data.water >= BUCKET_TOTAL;
-            document.getElementById('bucketAddBtn').textContent = data.water >= BUCKET_TOTAL ? '💧 已达标！' : '+ 喝150ml';
+            document.getElementById('miniBucketWater').style.height = percent + '%';
+            document.getElementById('miniBucketLabel').textContent = Math.floor(percent) + '%';
+            document.getElementById('bucketMinus').disabled = data.water <= 0;
         }
 
         // 更新分享卡片
