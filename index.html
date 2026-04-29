@@ -416,6 +416,232 @@
                 transform: translate(-50%, -80%) scale(1);
             }
         }
+
+        /* 水桶样式 */
+        .water-bucket-section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .bucket-container {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            margin: 20px auto;
+            background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 10px 10px 20px 20px;
+            border: 3px solid #90caf9;
+            overflow: hidden;
+        }
+
+        .bucket-water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0288d1 100%);
+            transition: height 0.5s ease-out;
+            border-radius: 0 0 17px 17px;
+        }
+
+        .bucket-water::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: #81d4fa;
+            border-radius: 50%;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(1.1); }
+        }
+
+        .bucket-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 700;
+            color: #01579b;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            z-index: 10;
+        }
+
+        .bucket-scale {
+            position: absolute;
+            right: 5px;
+            top: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #0277bd;
+        }
+
+        .bucket-add-btn {
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .bucket-add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(2,136,209,0.4);
+        }
+
+        .bucket-add-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .bucket-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .bucket-info span {
+            color: #0288d1;
+            font-weight: 700;
+        }
+
+        /* 分享卡片 */
+        .share-card-section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .share-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .share-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .share-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .share-date {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .share-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .share-stat {
+            text-align: center;
+        }
+
+        .share-stat-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .share-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .share-stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .share-water-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .share-water-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+            border-radius: 10px;
+            transition: width 0.5s ease-out;
+        }
+
+        .share-water-text {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .share-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .share-checkin-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #4caf50;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .share-checkin-btn:hover {
+            background: #45a049;
+        }
+
+        .share-checkin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -512,27 +738,70 @@
             </div>
         </div>
 
-        <!-- 本周打卡 -->
-        <div class="stats-section">
-            <div class="section-title">本周打卡</div>
-            <div class="week-grid" id="weekGrid">
-                <!-- 动态生成 -->
+        <!-- 喝水打卡水桶 -->
+        <div class="water-bucket-section">
+            <div class="section-title">💧 喝水打卡</div>
+            <div class="bucket-container">
+                <div class="bucket-water" id="bucketWater" style="height: 0%"></div>
+                <div class="bucket-label" id="bucketLabel">0%</div>
+                <div class="bucket-scale">
+                    <span>1500</span>
+                    <span>1200</span>
+                    <span>900</span>
+                    <span>600</span>
+                    <span>300</span>
+                    <span>0</span>
+                </div>
             </div>
-            <button class="reset-btn" onclick="resetWeek()">🔄 重置本周数据</button>
+            <div class="bucket-info">已喝 <span id="bucketMl">0</span> / 1500 ml</div>
+            <button class="bucket-add-btn" id="bucketAddBtn" onclick="addBucketWater()">+ 喝150ml</button>
+        </div>
+
+        <!-- 今日分享卡片 -->
+        <div class="share-card-section">
+            <div class="section-title">📸 生成今日打卡卡片</div>
+            <div class="share-card" id="shareCard">
+                <div class="share-header">
+                    <div class="share-title">🎯 今日健康打卡</div>
+                    <div class="share-date" id="shareDate">2026-04-28</div>
+                </div>
+                <div class="share-stats">
+                    <div class="share-stat">
+                        <div class="share-stat-icon">💩</div>
+                        <div class="share-stat-value" id="sharePupu">0</div>
+                        <div class="share-stat-label">噗噗</div>
+                    </div>
+                    <div class="share-stat">
+                        <div class="share-stat-icon">🧋</div>
+                        <div class="share-stat-value" id="shareMilktea">0</div>
+                        <div class="share-stat-label">奶茶</div>
+                    </div>
+                </div>
+                <div class="share-water-bar">
+                    <div class="share-water-fill" id="shareWaterFill" style="width: 0%"></div>
+                </div>
+                <div class="share-water-text">喝水进度: <span id="shareWaterText">0/1500ml</span></div>
+            </div>
+            <button class="share-checkin-btn" id="checkinBtn" onclick="doCheckIn()">✅ 今日打卡</button>
+            <button class="share-btn" onclick="shareCard()">📤 分享卡片</button>
+            <button class="reset-btn" onclick="resetWeek()" style="margin-top: 10px;">🔄 重置本周数据</button>
         </div>
     </div>
 
     <script>
         // 数据存储
         const MILKTEA_LIMIT = 3;
+        const BUCKET_TOTAL = 1500; // 水桶总容量
+        const BUCKET_PER_CLICK = 150; // 每次喝水量
 
         let data = {
             currentGoal: 'fatloss',
             currentDayIndex: 0,
             milktea: 0,
             pupu: 0,
-            water: 0,
-            weekCheck: [false, false, false, false, false, false, false]
+            water: 0, // 改为ml单位
+            weekCheck: [false, false, false, false, false, false, false],
+            todayChecked: false
         };
 
         const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
@@ -860,22 +1129,39 @@
             }
         }
 
+        // 添加水桶水
+        function addBucketWater() {
+            if (data.water + BUCKET_PER_CLICK <= BUCKET_TOTAL) {
+                data.water += BUCKET_PER_CLICK;
+                showFeedback('💧');
+                updateDisplay();
+                saveData();
+            }
+        }
+
+        // 减少水桶水
+        function removeBucketWater() {
+            if (data.water >= BUCKET_PER_CLICK) {
+                data.water -= BUCKET_PER_CLICK;
+                updateDisplay();
+                saveData();
+            }
+        }
+
         // 更新显示
         function updateDisplay() {
             document.getElementById('milkteaCount').textContent = data.milktea;
             document.getElementById('pupuCount').textContent = data.pupu;
-            document.getElementById('waterCount').textContent = data.water;
+            document.getElementById('waterCount').textContent = Math.floor(data.water / 150);
 
             // 更新奶茶限额状态
             const milkteaPlus = document.getElementById('milkteaPlus');
             const milkteaCard = document.getElementById('milkteaCard');
             const milkteaMinus = document.getElementById('milkteaMinus');
             const pupuMinus = document.getElementById('pupuMinus');
-            const waterMinus = document.getElementById('waterMinus');
 
             milkteaMinus.disabled = data.milktea <= 0;
             pupuMinus.disabled = data.pupu <= 0;
-            waterMinus.disabled = data.water <= 0;
 
             if (data.milktea >= MILKTEA_LIMIT) {
                 milkteaPlus.classList.add('over-limit');
@@ -885,6 +1171,76 @@
             } else {
                 milkteaPlus.classList.remove('over-limit');
                 milkteaPlus.textContent = '+';
+            }
+
+            // 更新水桶
+            updateBucket();
+
+            // 更新分享卡片
+            updateShareCard();
+
+            // 更新打卡按钮状态
+            document.getElementById('checkinBtn').disabled = data.todayChecked;
+            document.getElementById('checkinBtn').textContent = data.todayChecked ? '✅ 今日已打卡' : '✅ 今日打卡';
+        }
+
+        // 更新水桶显示
+        function updateBucket() {
+            const percent = Math.min((data.water / BUCKET_TOTAL) * 100, 100);
+            document.getElementById('bucketWater').style.height = percent + '%';
+            document.getElementById('bucketLabel').textContent = Math.floor(percent) + '%';
+            document.getElementById('bucketMl').textContent = data.water;
+            document.getElementById('bucketAddBtn').disabled = data.water >= BUCKET_TOTAL;
+            document.getElementById('bucketAddBtn').textContent = data.water >= BUCKET_TOTAL ? '💧 已达标！' : '+ 喝150ml';
+        }
+
+        // 更新分享卡片
+        function updateShareCard() {
+            const today = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+            document.getElementById('shareDate').textContent = today;
+            document.getElementById('sharePupu').textContent = data.pupu;
+            document.getElementById('shareMilktea').textContent = data.milktea;
+
+            const waterPercent = Math.min((data.water / BUCKET_TOTAL) * 100, 100);
+            document.getElementById('shareWaterFill').style.width = waterPercent + '%';
+            document.getElementById('shareWaterText').textContent = data.water + '/1500ml';
+        }
+
+        // 今日打卡
+        function doCheckIn() {
+            if (!data.todayChecked) {
+                data.todayChecked = true;
+                data.weekCheck[data.currentDayIndex] = true;
+                showFeedback('✅');
+                updateDisplay();
+                renderWeekGrid();
+                saveData();
+            }
+        }
+
+        // 分享卡片
+        async function shareCard() {
+            const card = document.getElementById('shareCard');
+
+            // 尝试使用原生分享API
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: '今日健康打卡',
+                        text: `今日打卡：噗噗${data.pupu}次 | 奶茶${data.milktea}杯 | 喝水${data.water}ml`,
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('分享取消');
+                }
+            } else {
+                // 复制到剪贴板
+                const text = `今日健康打卡\n📅 ${document.getElementById('shareDate').textContent}\n💩 噗噗: ${data.pupu}次\n🧋 奶茶: ${data.milktea}杯\n💧 喝水: ${data.water}/1500ml\n\n一起来打卡吧！`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('打卡内容已复制到剪贴板！');
+                }).catch(() => {
+                    alert('复制失败，请手动截图分享');
+                });
             }
         }
 
@@ -927,6 +1283,7 @@
                 data.pupu = 0;
                 data.water = 0;
                 data.weekCheck = [false, false, false, false, false, false, false];
+                data.todayChecked = false;
                 updateDisplay();
                 renderWeekGrid();
                 saveData();
@@ -935,11 +1292,12 @@
 
         // 重置喝水（每日自动）
         function checkNewDay() {
-            const today = new Date().getDay();
-            const savedDay = localStorage.getItem('healthTrackerDay');
-            if (savedDay !== String(today)) {
+            const today = new Date().toDateString();
+            const savedDay = localStorage.getItem('healthTrackerDate');
+            if (savedDay !== today) {
                 data.water = 0;
-                localStorage.setItem('healthTrackerDay', String(today));
+                data.todayChecked = false;
+                localStorage.setItem('healthTrackerDate', today);
                 saveData();
                 updateDisplay();
             }
