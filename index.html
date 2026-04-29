@@ -524,30 +524,30 @@
             opacity: 0.9;
         }
 
-        .image-week-section {
+        .record-section {
             background: rgba(255,255,255,0.15);
             border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
 
-        .image-week-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            opacity: 0.9;
+        .record-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            opacity: 0.95;
         }
 
-        .image-week-grid {
+        .record-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
 
-        .image-day-cell {
+        .record-cell {
             aspect-ratio: 1;
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -555,18 +555,18 @@
             padding: 4px;
         }
 
-        .image-day-cell.empty {
+        .record-cell.empty {
             background: rgba(255,255,255,0.2);
         }
 
-        .image-day-label {
-            font-size: 9px;
+        .record-day-label {
+            font-size: 10px;
             color: #999;
             margin-bottom: 2px;
         }
 
-        .image-day-icons {
-            font-size: 14px;
+        .record-icon {
+            font-size: 22px;
             line-height: 1;
         }
 
@@ -881,12 +881,22 @@
                             <div class="image-date" id="imageDate">1.1-1.7</div>
                         </div>
 
-                        <!-- 周打卡记录 -->
-                        <div class="image-week-section">
-                            <div class="image-week-title">📅 每日记录</div>
-                            <div class="image-week-grid" id="imageWeekGrid">
-                                <!-- 动态生成 -->
-                            </div>
+                        <!-- 奶茶记录 -->
+                        <div class="record-section">
+                            <div class="record-title">🧋 本周奶茶记录</div>
+                            <div class="record-grid" id="milkteaRecordGrid"></div>
+                        </div>
+
+                        <!-- 喝水记录 -->
+                        <div class="record-section">
+                            <div class="record-title">💧 本周喝水记录</div>
+                            <div class="record-grid" id="waterRecordGrid"></div>
+                        </div>
+
+                        <!-- 噗噗记录 -->
+                        <div class="record-section">
+                            <div class="record-title">💩 本周噗噗记录</div>
+                            <div class="record-grid" id="pupuRecordGrid"></div>
                         </div>
 
                         <!-- 本周总结 -->
@@ -1184,23 +1194,57 @@
             document.getElementById('imageDate').textContent =
                 `${weekStart.getMonth() + 1}.${weekStart.getDate()}-${weekEnd.getMonth() + 1}.${weekEnd.getDate()}`;
 
-            // 生成周打卡网格
-            let gridHTML = '';
-            for (let i = 0; i < 7; i++) {
-                const icons = [];
-                if (data.milktea[i] > 0) icons.push('🧋');
-                if (data.water[i] > 0) icons.push('💧');
-                if (data.pupu[i] > 0) icons.push('💩');
+            // 奶茶图标池
+            const milkteaIcons = ['🧉', '☕', '🥤', '🧋', '🍵'];
+            // 喝水图标池
+            const waterIcons = ['💧', '💦', '💎', '🔷', '🔹'];
+            // 噗噗图标池
+            const pupuIcons = ['🧻', '🚽', '🚾', '🧼', '🛁'];
 
-                const hasData = icons.length > 0;
-                gridHTML += `
-                    <div class="image-day-cell ${!hasData ? 'empty' : ''}">
-                        <div class="image-day-label">${dayLabels[i]}</div>
-                        <div class="image-day-icons">${icons.join('') || '·'}</div>
+            // 生成奶茶记录网格
+            let milkteaHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const count = data.milktea[i];
+                const hasData = count > 0;
+                const icon = hasData ? milkteaIcons[(i + count) % milkteaIcons.length] : '';
+                milkteaHTML += `
+                    <div class="record-cell ${!hasData ? 'empty' : ''}">
+                        <div class="record-day-label">${dayLabels[i]}</div>
+                        <div class="record-icon">${icon || ' '}</div>
                     </div>
                 `;
             }
-            document.getElementById('imageWeekGrid').innerHTML = gridHTML;
+            document.getElementById('milkteaRecordGrid').innerHTML = milkteaHTML;
+
+            // 生成喝水记录网格
+            let waterHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const count = data.water[i];
+                const hasData = count > 0;
+                const icon = hasData ? waterIcons[(i + Math.floor(count / 150)) % waterIcons.length] : '';
+                waterHTML += `
+                    <div class="record-cell ${!hasData ? 'empty' : ''}">
+                        <div class="record-day-label">${dayLabels[i]}</div>
+                        <div class="record-icon">${icon || ' '}</div>
+                    </div>
+                `;
+            }
+            document.getElementById('waterRecordGrid').innerHTML = waterHTML;
+
+            // 生成噗噗记录网格
+            let pupuHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const count = data.pupu[i];
+                const hasData = count > 0;
+                const icon = hasData ? pupuIcons[(i + count) % pupuIcons.length] : '';
+                pupuHTML += `
+                    <div class="record-cell ${!hasData ? 'empty' : ''}">
+                        <div class="record-day-label">${dayLabels[i]}</div>
+                        <div class="record-icon">${icon || ' '}</div>
+                    </div>
+                `;
+            }
+            document.getElementById('pupuRecordGrid').innerHTML = pupuHTML;
 
             // 设置统计数据
             document.getElementById('imageMilktea').textContent = totalMilktea;
