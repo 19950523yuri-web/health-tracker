@@ -195,31 +195,36 @@
         .product-info {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .product-header {
+        .product-title-line {
             display: flex;
-            align-items: flex-start;
-            gap: 6px;
+            align-items: center;
+            gap: 4px;
             margin-bottom: 6px;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .product-shop {
-            font-size: 12px;
             color: #666;
             font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .divider {
+            color: #ccc;
         }
 
         .product-name {
-            font-size: 14px;
-            font-weight: 600;
             color: #333;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            font-weight: 600;
             overflow: hidden;
-            margin-bottom: 6px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .product-tags {
@@ -237,24 +242,9 @@
             border-radius: 4px;
         }
 
-        .product-nutrition {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 6px;
-        }
-
-        .nutrition-item {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .nutrition-item.calorie {
-            color: #ff5722;
-            font-weight: 600;
+        .product-tag.calorie {
+            background: #fff3e0;
+            color: #f57c00;
         }
 
         .product-bottom {
@@ -266,7 +256,7 @@
         .product-price-row {
             display: flex;
             align-items: baseline;
-            gap: 8px;
+            gap: 6px;
         }
 
         .price-current {
@@ -278,6 +268,12 @@
         .price-current::before {
             content: '¥';
             font-size: 12px;
+        }
+
+        .price-original {
+            font-size: 12px;
+            color: #999;
+            text-decoration: line-through;
         }
 
         .delivery-time {
@@ -687,28 +683,28 @@
         // 外卖商品数据池
         const productPool = {
             breakfast: [
-                { emoji: '🥪', name: '全麦三明治+无糖豆浆套餐', shop: '轻食主义', price: 18.8, deliveryTime: '30分钟', sold: '月售1200+', cal: '320卡', protein: '18g', carbs: '35g', fat: '8g', tags: ['高膳食纤维', '低脂轻负担'] },
-                { emoji: '🥚', name: '水煮蛋2个+燕麦粥', shop: '早餐工坊', price: 12.9, deliveryTime: '25分钟', sold: '月售800+', cal: '280卡', protein: '16g', carbs: '28g', fat: '10g', tags: ['饱腹感强', '低GI'] },
-                { emoji: '🥣', name: '杂粮煎饼果子（无油条）', shop: '老北京煎饼', price: 15, deliveryTime: '35分钟', sold: '月售2000+', cal: '350卡', protein: '12g', carbs: '45g', fat: '12g', tags: ['粗粮主食', '控糖友好'] },
-                { emoji: '🥑', name: '牛油果鸡蛋沙拉', shop: '健康轻食', price: 28.8, deliveryTime: '40分钟', sold: '月售500+', cal: '380卡', protein: '15g', carbs: '12g', fat: '28g', tags: ['优质脂肪', '高蛋白'] },
-                { emoji: '🌾', name: '燕麦酸奶水果碗', shop: '酸奶星球', price: 22, deliveryTime: '30分钟', sold: '月售1500+', cal: '300卡', protein: '10g', carbs: '48g', fat: '6g', tags: ['益生菌', '低脂轻食'] },
-                { emoji: '🥛', name: '无糖豆浆+蔬菜包子2个', shop: '永和豆浆', price: 14.5, deliveryTime: '25分钟', sold: '月售3000+', cal: '310卡', protein: '14g', carbs: '42g', fat: '8g', tags: ['植物蛋白', '传统早餐'] }
+                { emoji: '🥪', name: '全麦三明治+无糖豆浆套餐', shop: '轻食主义', price: 18.8, originalPrice: 28, deliveryTime: '30分钟', sold: '月售1200+', cal: '320卡', tags: ['高膳食纤维', '低脂轻负担'] },
+                { emoji: '🥚', name: '水煮蛋2个+燕麦粥', shop: '早餐工坊', price: 12.9, originalPrice: 18, deliveryTime: '25分钟', sold: '月售800+', cal: '280卡', tags: ['饱腹感强', '低GI'] },
+                { emoji: '🥣', name: '杂粮煎饼果子（无油条）', shop: '老北京煎饼', price: 15, originalPrice: 20, deliveryTime: '35分钟', sold: '月售2000+', cal: '350卡', tags: ['粗粮主食', '控糖友好'] },
+                { emoji: '🥑', name: '牛油果鸡蛋沙拉', shop: '健康轻食', price: 28.8, originalPrice: 38, deliveryTime: '40分钟', sold: '月售500+', cal: '380卡', tags: ['优质脂肪', '高蛋白'] },
+                { emoji: '🌾', name: '燕麦酸奶水果碗', shop: '酸奶星球', price: 22, originalPrice: 32, deliveryTime: '30分钟', sold: '月售1500+', cal: '300卡', tags: ['益生菌', '低脂轻食'] },
+                { emoji: '🥛', name: '无糖豆浆+蔬菜包子2个', shop: '永和豆浆', price: 14.5, originalPrice: 20, deliveryTime: '25分钟', sold: '月售3000+', cal: '310卡', tags: ['植物蛋白', '传统早餐'] }
             ],
             lunch: [
-                { emoji: '🍱', name: '香煎鸡胸肉+糙米饭+西兰花', shop: '轻食便当', price: 32.8, deliveryTime: '35分钟', sold: '月售2500+', cal: '480卡', protein: '42g', carbs: '45g', fat: '12g', tags: ['高蛋白', '增肌减脂'] },
-                { emoji: '🐟', name: '清蒸鲈鱼+杂粮饭+时蔬', shop: '蒸鲜阁', price: 45, deliveryTime: '40分钟', sold: '月售1800+', cal: '520卡', protein: '38g', carbs: '48g', fat: '14g', tags: ['优质蛋白', '补脑益智'] },
-                { emoji: '🦐', name: '白灼虾套餐（12只）+蔬菜', shop: '海鲜饭堂', price: 52, deliveryTime: '45分钟', sold: '月售900+', cal: '450卡', protein: '48g', carbs: '15g', fat: '8g', tags: ['高蛋白', '低脂低卡'] },
-                { emoji: '🥦', name: '西兰花炒牛肉+紫薯', shop: '健身厨房', price: 38.8, deliveryTime: '38分钟', sold: '月售1600+', cal: '490卡', protein: '35g', carbs: '42g', fat: '16g', tags: ['高铁补血', '抗氧化'] },
-                { emoji: '🍲', name: '番茄鸡蛋荞麦面', shop: '面食记', price: 22, deliveryTime: '30分钟', sold: '月售2200+', cal: '420卡', protein: '18g', carbs: '58g', fat: '12g', tags: ['番茄红素', '饱腹主食'] },
-                { emoji: '🥗', name: '凯撒沙拉+烤鸡胸', shop: '沙拉实验室', price: 35, deliveryTime: '32分钟', sold: '月售1400+', cal: '380卡', protein: '32g', carbs: '12g', fat: '20g', tags: ['刷脂神器', '清爽解腻'] }
+                { emoji: '🍱', name: '香煎鸡胸肉+糙米饭+西兰花', shop: '轻食便当', price: 32.8, originalPrice: 45, deliveryTime: '35分钟', sold: '月售2500+', cal: '480卡', tags: ['高蛋白', '增肌减脂'] },
+                { emoji: '🐟', name: '清蒸鲈鱼+杂粮饭+时蔬', shop: '蒸鲜阁', price: 45, originalPrice: 58, deliveryTime: '40分钟', sold: '月售1800+', cal: '520卡', tags: ['优质蛋白', '补脑益智'] },
+                { emoji: '🦐', name: '白灼虾套餐（12只）+蔬菜', shop: '海鲜饭堂', price: 52, originalPrice: 68, deliveryTime: '45分钟', sold: '月售900+', cal: '450卡', tags: ['高蛋白', '低脂低卡'] },
+                { emoji: '🥦', name: '西兰花炒牛肉+紫薯', shop: '健身厨房', price: 38.8, originalPrice: 48, deliveryTime: '38分钟', sold: '月售1600+', cal: '490卡', tags: ['高铁补血', '抗氧化'] },
+                { emoji: '🍲', name: '番茄鸡蛋荞麦面', shop: '面食记', price: 22, originalPrice: 28, deliveryTime: '30分钟', sold: '月售2200+', cal: '420卡', tags: ['番茄红素', '饱腹主食'] },
+                { emoji: '🥗', name: '凯撒沙拉+烤鸡胸', shop: '沙拉实验室', price: 35, originalPrice: 45, deliveryTime: '32分钟', sold: '月售1400+', cal: '380卡', tags: ['刷脂神器', '清爽解腻'] }
             ],
             dinner: [
-                { emoji: '🥗', name: '混合蔬菜沙拉+油醋汁', shop: '轻食沙拉', price: 25, deliveryTime: '30分钟', sold: '月售2000+', cal: '180卡', protein: '6g', carbs: '18g', fat: '10g', tags: ['超低卡', '膳食纤维'] },
-                { emoji: '🐟', name: '香煎鳕鱼+芦笋', shop: '海鲜轻食', price: 48, deliveryTime: '40分钟', sold: '月售700+', cal: '320卡', protein: '38g', carbs: '8g', fat: '14g', tags: ['Omega-3', '低脂高蛋白'] },
-                { emoji: '🥒', name: '拍黄瓜+凉拌木耳+小米粥', shop: '凉拌菜馆', price: 18.8, deliveryTime: '25分钟', sold: '月售1500+', cal: '220卡', protein: '8g', carbs: '28g', fat: '8g', tags: ['清肠胃', '低卡爽口'] },
-                { emoji: '🥦', name: '蒜蓉西兰花+蒸蛋羹', shop: '蒸菜馆', price: 22, deliveryTime: '28分钟', sold: '月售1100+', cal: '240卡', protein: '16g', carbs: '12g', fat: '14g', tags: ['抗氧化', '嫩滑可口'] },
-                { emoji: '🍄', name: '金针菇肥牛（少油）', shop: '日韩料理', price: 38, deliveryTime: '38分钟', sold: '月售2300+', cal: '350卡', protein: '28g', carbs: '15g', fat: '22g', tags: ['刷脂饱腹', '鲜香可口'] },
-                { emoji: '🦑', name: '爆炒鱿鱼圈+生菜', shop: '海鲜大排档', price: 35.8, deliveryTime: '35分钟', sold: '月售900+', cal: '280卡', protein: '32g', carbs: '10g', fat: '12g', tags: ['高蛋白', '低卡美味'] }
+                { emoji: '🥗', name: '混合蔬菜沙拉+油醋汁', shop: '轻食沙拉', price: 25, originalPrice: 32, deliveryTime: '30分钟', sold: '月售2000+', cal: '180卡', tags: ['超低卡', '膳食纤维'] },
+                { emoji: '🐟', name: '香煎鳕鱼+芦笋', shop: '海鲜轻食', price: 48, originalPrice: 62, deliveryTime: '40分钟', sold: '月售700+', cal: '320卡', tags: ['Omega-3', '低脂高蛋白'] },
+                { emoji: '🥒', name: '拍黄瓜+凉拌木耳+小米粥', shop: '凉拌菜馆', price: 18.8, originalPrice: 25, deliveryTime: '25分钟', sold: '月售1500+', cal: '220卡', tags: ['清肠胃', '低卡爽口'] },
+                { emoji: '🥦', name: '蒜蓉西兰花+蒸蛋羹', shop: '蒸菜馆', price: 22, originalPrice: 28, deliveryTime: '28分钟', sold: '月售1100+', cal: '240卡', tags: ['抗氧化', '嫩滑可口'] },
+                { emoji: '🍄', name: '金针菇肥牛（少油）', shop: '日韩料理', price: 38, originalPrice: 48, deliveryTime: '38分钟', sold: '月售2300+', cal: '350卡', tags: ['刷脂饱腹', '鲜香可口'] },
+                { emoji: '🦑', name: '爆炒鱿鱼圈+生菜', shop: '海鲜大排档', price: 35.8, originalPrice: 45, deliveryTime: '35分钟', sold: '月售900+', cal: '280卡', tags: ['高蛋白', '低卡美味'] }
             ]
         };
 
@@ -756,22 +752,20 @@
                             <span class="product-sold">${p.sold}</span>
                         </div>
                         <div class="product-info">
-                            <div class="product-header">
+                            <div class="product-title-line">
                                 <span class="product-shop">${p.shop}</span>
+                                <span class="divider">｜</span>
+                                <span class="product-name">${p.name}</span>
                             </div>
-                            <div class="product-name">${p.name}</div>
                             <div class="product-tags">
+                                <span class="product-tag calorie">🔥 ${p.cal}</span>
+                                <span class="product-tag">🍽️ 可堂食</span>
                                 ${p.tags.map(t => `<span class="product-tag">${t}</span>`).join('')}
-                            </div>
-                            <div class="product-nutrition">
-                                <span class="nutrition-item calorie">🔥 ${p.cal}</span>
-                                <span class="nutrition-item">🥩 ${p.protein || '20g'}</span>
-                                <span class="nutrition-item">🍞 ${p.carbs || '30g'}</span>
-                                <span class="nutrition-item">🥑 ${p.fat || '8g'}</span>
                             </div>
                             <div class="product-bottom">
                                 <div class="product-price-row">
                                     <span class="price-current">${p.price}</span>
+                                    <span class="price-original">¥${p.originalPrice}</span>
                                 </div>
                                 <span class="delivery-time">🕐 ${p.deliveryTime}</span>
                             </div>
