@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>本周健康食谱</title>
+    <title>本周健康外卖</title>
     <style>
         * {
             margin: 0;
@@ -68,7 +68,7 @@
             background: #e8e8e8;
         }
 
-        /* 食谱主区域 */
+        /* 外卖区域 */
         .meal-section {
             background: white;
             border-radius: 20px;
@@ -118,47 +118,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 食谱说明 */
-        .meal-desc {
-            background: linear-gradient(135deg, #f0f4ff, #e8f5e9);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .meal-desc-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .meal-desc-text {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .meal-desc-tags {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .meal-tag {
-            font-size: 11px;
-            padding: 4px 10px;
-            background: white;
-            border-radius: 12px;
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        /* 三餐区域 */
+        /* 餐段标题 */
         .meal-time {
             margin-bottom: 20px;
         }
@@ -172,28 +132,24 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .meal-time-icon {
-            font-size: 20px;
+            font-size: 22px;
         }
 
         .meal-time-title {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: #333;
         }
 
-        .meal-time-cal {
-            font-size: 12px;
-            color: #999;
-            margin-left: auto;
-        }
-
-        /* 食物卡片 */
+        /* 商品卡片 */
         .food-cards {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
             padding-bottom: 5px;
             scrollbar-width: none;
@@ -203,65 +159,148 @@
             display: none;
         }
 
-        .food-card {
-            min-width: 110px;
-            background: #fafafa;
+        .product-card {
+            min-width: 280px;
+            background: white;
             border-radius: 16px;
-            padding: 15px 10px;
-            text-align: center;
-            border: 2px solid #f0f0f0;
+            border: 1px solid #f0f0f0;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             transition: all 0.2s;
         }
 
-        .food-card:hover {
-            border-color: #667eea;
+        .product-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transform: translateY(-2px);
         }
 
-        .food-emoji {
-            font-size: 36px;
-            margin-bottom: 8px;
+        .product-image {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #f5f7fa, #e4e8ec);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
         }
 
-        .food-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .food-cal {
+        .product-sold {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
             font-size: 11px;
-            color: #888;
-            margin-bottom: 8px;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
 
-        .food-benefit {
-            font-size: 10px;
-            color: #4CAF50;
+        .product-content {
+            padding: 12px;
+        }
+
+        .product-shop {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-shop::before {
+            content: '🏪';
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-delivery {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .delivery-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .product-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-tag {
+            font-size: 11px;
             padding: 3px 8px;
             background: #e8f5e9;
-            border-radius: 10px;
-            margin-bottom: 8px;
+            color: #4CAF50;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .product-tag.calorie {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .price-current {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff5722;
+        }
+
+        .price-current::before {
+            content: '¥';
+            font-size: 14px;
+        }
+
+        .price-original {
+            font-size: 13px;
+            color: #999;
+            text-decoration: line-through;
         }
 
         .buy-btn {
-            display: inline-block;
-            padding: 6px 12px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff5722, #f4511e);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 11px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
             transition: all 0.2s;
         }
 
         .buy-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 3px 10px rgba(238, 90, 90, 0.3);
+            box-shadow: 0 3px 10px rgba(255, 87, 34, 0.3);
         }
 
         /* 打卡区域 */
@@ -502,7 +541,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🍽️ 本周健康食谱</h1>
+        <h1>🍱 本周健康外卖</h1>
 
         <!-- 周导航 -->
         <div class="week-nav">
@@ -517,60 +556,42 @@
             </div>
         </div>
 
-        <!-- 今日食谱 -->
+        <!-- 今日外卖推荐 -->
         <div class="meal-section">
             <div class="section-header">
-                <div class="section-title" id="dayTitle">周一食谱</div>
+                <div class="section-title" id="dayTitle">周一外卖</div>
                 <button class="refresh-btn" onclick="refreshMeals()">
                     <span>🔄</span> 换一换
                 </button>
             </div>
 
-            <!-- 食谱说明 -->
-            <div class="meal-desc">
-                <div class="meal-desc-title">
-                    <span>📋</span> 今日食谱作用
-                </div>
-                <div class="meal-desc-text" id="mealDesc">
-                    高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。
-                </div>
-                <div class="meal-desc-tags">
-                    <span class="meal-tag">🔥 燃脂</span>
-                    <span class="meal-tag">💪 高蛋白</span>
-                    <span class="meal-tag">🥗 低卡</span>
-                </div>
-            </div>
-
-            <!-- 早餐 -->
+            <!-- 早餐建议 -->
             <div class="meal-time">
                 <div class="meal-time-header">
                     <span class="meal-time-icon">🌅</span>
-                    <span class="meal-time-title">早餐</span>
-                    <span class="meal-time-cal" id="breakfastCal">约350卡</span>
+                    <span class="meal-time-title">早餐建议</span>
                 </div>
                 <div class="food-cards" id="breakfastCards">
                     <!-- 动态生成 -->
                 </div>
             </div>
 
-            <!-- 午餐 -->
+            <!-- 午餐建议 -->
             <div class="meal-time">
                 <div class="meal-time-header">
                     <span class="meal-time-icon">☀️</span>
-                    <span class="meal-time-title">午餐</span>
-                    <span class="meal-time-cal" id="lunchCal">约500卡</span>
+                    <span class="meal-time-title">午餐建议</span>
                 </div>
                 <div class="food-cards" id="lunchCards">
                     <!-- 动态生成 -->
                 </div>
             </div>
 
-            <!-- 晚餐 -->
+            <!-- 晚餐建议 -->
             <div class="meal-time">
                 <div class="meal-time-header">
                     <span class="meal-time-icon">🌙</span>
-                    <span class="meal-time-title">晚餐</span>
-                    <span class="meal-time-cal" id="dinnerCal">约400卡</span>
+                    <span class="meal-time-title">晚餐建议</span>
                 </div>
                 <div class="food-cards" id="dinnerCards">
                     <!-- 动态生成 -->
@@ -657,51 +678,42 @@
 
         const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
-        // 食谱数据池
-        const mealPool = {
+        // 外卖商品数据池
+        const productPool = {
             breakfast: [
-                { emoji: '🥚', name: '水煮蛋', cal: '70卡', benefit: '高蛋白', search: '鸡蛋' },
-                { emoji: '🥛', name: '无糖豆浆', cal: '45卡', benefit: '植物蛋白', search: '无糖豆浆' },
-                { emoji: '🌾', name: '燕麦粥', cal: '120卡', benefit: '低GI饱腹', search: '燕麦片' },
-                { emoji: '🥑', name: '牛油果', cal: '80卡', benefit: '好脂肪', search: '牛油果' },
-                { emoji: '🍠', name: '蒸红薯', cal: '90卡', benefit: '膳食纤维', search: '红薯' },
-                { emoji: '🥣', name: '小米粥', cal: '90卡', benefit: '养胃', search: '小米' },
-                { emoji: '🌽', name: '甜玉米', cal: '85卡', benefit: '粗粮', search: '玉米' },
-                { emoji: '🥚', name: '茶叶蛋', cal: '75卡', benefit: '便携', search: '茶叶蛋' }
+                { emoji: '🥪', name: '全麦三明治+无糖豆浆套餐', shop: '轻食主义', price: 18.8, originalPrice: 28, deliveryTime: '30分钟', deliveryFee: 0, sold: '1200+', cal: '320卡', tags: ['高蛋白', '低脂'] },
+                { emoji: '🥚', name: '水煮蛋2个+燕麦粥', shop: '早餐工坊', price: 12.9, originalPrice: 18, deliveryTime: '25分钟', deliveryFee: 1, sold: '800+', cal: '280卡', tags: ['饱腹感', '低GI'] },
+                { emoji: '🥣', name: '杂粮煎饼果子（无油条）', shop: '老北京煎饼', price: 15, originalPrice: 20, deliveryTime: '35分钟', deliveryFee: 0, sold: '2000+', cal: '350卡', tags: ['粗粮', '控糖'] },
+                { emoji: '🥑', name: '牛油果鸡蛋沙拉', shop: '健康轻食', price: 28.8, originalPrice: 38, deliveryTime: '40分钟', deliveryFee: 2, sold: '500+', cal: '380卡', tags: ['好脂肪', '高蛋白'] },
+                { emoji: '🌾', name: '燕麦酸奶水果碗', shop: '酸奶星球', price: 22, originalPrice: 32, deliveryTime: '30分钟', deliveryFee: 1, sold: '1500+', cal: '300卡', tags: ['益生菌', '低脂'] },
+                { emoji: '🥛', name: '无糖豆浆+蔬菜包子2个', shop: '永和豆浆', price: 14.5, originalPrice: 20, deliveryTime: '25分钟', deliveryFee: 0, sold: '3000+', cal: '310卡', tags: ['植物蛋白', '饱腹'] },
+                { emoji: '🍠', name: '蒸红薯+水煮蛋+牛奶', shop: '蒸功夫', price: 16.8, originalPrice: 25, deliveryTime: '30分钟', deliveryFee: 1, sold: '900+', cal: '340卡', tags: ['膳食纤维', '补钙'] },
+                { emoji: '🥗', name: '蔬菜鸡蛋卷饼', shop: '卷饼王', price: 13.9, originalPrice: 19, deliveryTime: '28分钟', deliveryFee: 0, sold: '1100+', cal: '290卡', tags: ['低卡', '维生素'] }
             ],
             lunch: [
-                { emoji: '🐔', name: '鸡胸肉', cal: '120卡', benefit: '低脂高蛋白', search: '鸡胸肉' },
-                { emoji: '🐟', name: '清蒸鱼', cal: '100卡', benefit: '优质蛋白', search: '鲈鱼' },
-                { emoji: '🦐', name: '白灼虾', cal: '100卡', benefit: '高蛋白低脂', search: '基围虾' },
-                { emoji: '🥦', name: '西兰花', cal: '30卡', benefit: '高纤维', search: '西兰花' },
-                { emoji: '🥬', name: '炒菠菜', cal: '25卡', benefit: '补铁', search: '菠菜' },
-                { emoji: '🍄', name: '金针菇', cal: '30卡', benefit: '刷脂', search: '金针菇' },
-                { emoji: '🥒', name: '拍黄瓜', cal: '20卡', benefit: '消肿', search: '黄瓜' },
-                { emoji: '🐮', name: '牛肉片', cal: '130卡', benefit: '增肌', search: '牛腱子' }
+                { emoji: '🍱', name: '香煎鸡胸肉+糙米饭+西兰花', shop: '轻食便当', price: 32.8, originalPrice: 45, deliveryTime: '35分钟', deliveryFee: 1, sold: '2500+', cal: '480卡', tags: ['高蛋白', '增肌'] },
+                { emoji: '🐟', name: '清蒸鲈鱼+杂粮饭+时蔬', shop: '蒸鲜阁', price: 45, originalPrice: 58, deliveryTime: '40分钟', deliveryFee: 2, sold: '1800+', cal: '520卡', tags: ['优质蛋白', '补脑'] },
+                { emoji: '🦐', name: '白灼虾套餐（12只）+蔬菜', shop: '海鲜饭堂', price: 52, originalPrice: 68, deliveryTime: '45分钟', deliveryFee: 3, sold: '900+', cal: '450卡', tags: ['高蛋白', '低脂'] },
+                { emoji: '🥦', name: '西兰花炒牛肉+紫薯', shop: '健身厨房', price: 38.8, originalPrice: 48, deliveryTime: '38分钟', deliveryFee: 1, sold: '1600+', cal: '490卡', tags: ['高铁', '抗氧化'] },
+                { emoji: '🍲', name: '番茄鸡蛋荞麦面', shop: '面食记', price: 22, originalPrice: 28, deliveryTime: '30分钟', deliveryFee: 0, sold: '2200+', cal: '420卡', tags: ['番茄红素', '饱腹'] },
+                { emoji: '🥗', name: '凯撒沙拉+烤鸡胸', shop: '沙拉实验室', price: 35, originalPrice: 45, deliveryTime: '32分钟', deliveryFee: 2, sold: '1400+', cal: '380卡', tags: ['刷脂', '清爽'] },
+                { emoji: '🍗', name: '去皮鸡腿饭+凉拌黄瓜', shop: '台式便当', price: 28.8, originalPrice: 36, deliveryTime: '35分钟', deliveryFee: 1, sold: '3100+', cal: '460卡', tags: ['解馋', '高蛋白'] },
+                { emoji: '🥘', name: '冬瓜排骨（去油）汤饭', shop: '汤皇小厨', price: 32, originalPrice: 40, deliveryTime: '42分钟', deliveryFee: 1, sold: '1200+', cal: '440卡', tags: ['消肿', '暖胃'] }
             ],
             dinner: [
-                { emoji: '🥗', name: '生菜沙拉', cal: '25卡', benefit: '超低卡', search: '生菜' },
-                { emoji: '🍅', name: '小番茄', cal: '20卡', benefit: '维C', search: '圣女果' },
-                { emoji: '🥒', name: '拌黄瓜', cal: '20卡', benefit: '清爽', search: '黄瓜' },
-                { emoji: '🥦', name: '蒜蓉西兰花', cal: '35卡', benefit: '抗氧化', search: '西兰花' },
-                { emoji: '🐟', name: '鳕鱼', cal: '90卡', benefit: '鲜嫩', search: '鳕鱼' },
-                { emoji: '🦑', name: '炒鱿鱼', cal: '80卡', benefit: '高蛋白', search: '鱿鱼' },
-                { emoji: '🥬', name: '油麦菜', cal: '20卡', benefit: '通便', search: '油麦菜' },
-                { emoji: '🍄', name: '杏鲍菇', cal: '35卡', benefit: '饱腹', search: '杏鲍菇' }
+                { emoji: '🥗', name: '混合蔬菜沙拉+油醋汁', shop: '轻食沙拉', price: 25, originalPrice: 32, deliveryTime: '30分钟', deliveryFee: 1, sold: '2000+', cal: '180卡', tags: ['超低卡', '膳食纤维'] },
+                { emoji: '🐟', name: '香煎鳕鱼+芦笋', shop: '海鲜轻食', price: 48, originalPrice: 62, deliveryTime: '40分钟', deliveryFee: 2, sold: '700+', cal: '320卡', tags: ['Omega-3', '低脂'] },
+                { emoji: '🥒', name: '拍黄瓜+凉拌木耳+小米粥', shop: '凉拌菜馆', price: 18.8, originalPrice: 25, deliveryTime: '25分钟', deliveryFee: 0, sold: '1500+', cal: '220卡', tags: ['清肠胃', '低卡'] },
+                { emoji: '🥦', name: '蒜蓉西兰花+蒸蛋羹', shop: '蒸菜馆', price: 22, originalPrice: 28, deliveryTime: '28分钟', deliveryFee: 1, sold: '1100+', cal: '240卡', tags: ['抗氧化', '嫩滑'] },
+                { emoji: '🍄', name: '金针菇肥牛（少油）', shop: '日韩料理', price: 38, originalPrice: 48, deliveryTime: '38分钟', deliveryFee: 2, sold: '2300+', cal: '350卡', tags: ['刷脂', '饱腹'] },
+                { emoji: '🦑', name: '爆炒鱿鱼圈+生菜', shop: '海鲜大排档', price: 35.8, originalPrice: 45, deliveryTime: '35分钟', deliveryFee: 1, sold: '900+', cal: '280卡', tags: ['高蛋白', '低卡'] },
+                { emoji: '🥬', name: '上汤娃娃菜+蒸南瓜', shop: '粤菜馆', price: 26, originalPrice: 32, deliveryTime: '32分钟', deliveryFee: 1, sold: '1300+', cal: '200卡', tags: ['消肿', '养胃'] },
+                { emoji: '🥗', name: '牛油果虾仁沙拉', shop: '高端轻食', price: 42, originalPrice: 55, deliveryTime: '45分钟', deliveryFee: 3, sold: '600+', cal: '340卡', tags: ['好脂肪', '优质蛋白'] }
             ]
         };
 
-        // 食谱说明
-        const mealDescs = [
-            { text: '高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。', tags: ['🔥 燃脂', '💪 高蛋白', '🥗 低卡'] },
-            { text: '控糖维稳食谱，低GI食物组合，平稳血糖不犯困，适合上班族和学生党。', tags: ['🍬 控糖', '🧠 提神', '📊 稳血糖'] },
-            { text: '清肠排毒组合，高纤维食物促进肠道蠕动，帮助噗噗通畅，改善便秘。', tags: ['🌿 排毒', '🌀 清肠', '✨ 轻盈'] },
-            { text: '去水肿配方，高钾低钠食物帮助排出多余水分，让脸小一圈。', tags: ['💧 排水肿', '😊 瘦脸', '⚡ 活力'] },
-            { text: '均衡营养组合，蛋白质碳水脂肪比例均衡，适合日常健康饮食。', tags: ['⚖️ 均衡', '🌈 营养', '💚 健康'] }
-        ];
-
-        // 当前显示的食谱
-        let currentMeals = {
+        // 当前显示的商品
+        let currentProducts = {
             breakfast: [],
             lunch: [],
             dinner: []
@@ -711,46 +723,59 @@
         function init() {
             loadData();
             checkNewDay();
-            generateMeals();
-            renderMeals();
+            generateProducts();
+            renderProducts();
             updateDisplay();
         }
 
-        // 生成随机食谱
-        function generateMeals() {
+        // 生成随机商品
+        function generateProducts() {
             const getRandomItems = (arr, count) => {
                 const shuffled = [...arr].sort(() => 0.5 - Math.random());
                 return shuffled.slice(0, count);
             };
 
-            currentMeals.breakfast = getRandomItems(mealPool.breakfast, 3);
-            currentMeals.lunch = getRandomItems(mealPool.lunch, 4);
-            currentMeals.dinner = getRandomItems(mealPool.dinner, 3);
-
-            // 随机选择食谱说明
-            const desc = mealDescs[Math.floor(Math.random() * mealDescs.length)];
-            document.getElementById('mealDesc').textContent = desc.text;
-            document.querySelector('.meal-desc-tags').innerHTML = desc.tags.map(t => `<span class="meal-tag">${t}</span>`).join('');
+            currentProducts.breakfast = getRandomItems(productPool.breakfast, 2);
+            currentProducts.lunch = getRandomItems(productPool.lunch, 3);
+            currentProducts.dinner = getRandomItems(productPool.dinner, 2);
         }
 
-        // 渲染食谱
-        function renderMeals() {
-            const renderCards = (meals, containerId) => {
+        // 渲染商品卡片
+        function renderProducts() {
+            const renderCards = (products, containerId) => {
                 const container = document.getElementById(containerId);
-                container.innerHTML = meals.map(food => `
-                    <div class="food-card">
-                        <div class="food-emoji">${food.emoji}</div>
-                        <div class="food-name">${food.name}</div>
-                        <div class="food-cal">${food.cal}</div>
-                        <div class="food-benefit">${food.benefit}</div>
-                        <a href="https://s.taobao.com/search?q=${encodeURIComponent(food.search)}" target="_blank" class="buy-btn">去购买</a>
+                container.innerHTML = products.map(p => `
+                    <div class="product-card">
+                        <div class="product-image">
+                            ${p.emoji}
+                            <span class="product-sold">月售${p.sold}</span>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-shop">${p.shop}</div>
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-delivery">
+                                <span class="delivery-item">🕐 ${p.deliveryTime}</span>
+                                <span class="delivery-item">🛵 配送${p.deliveryFee === 0 ? '免费' : '¥' + p.deliveryFee}</span>
+                            </div>
+                            <div class="product-tags">
+                                ${p.tags.map(t => `<span class="product-tag">${t}</span>`).join('')}
+                                <span class="product-tag calorie">🔥 ${p.cal}</span>
+                            </div>
+                            <div class="product-bottom">
+                                <div class="product-price">
+                                    <span class="price-current">${p.price}</span>
+                                    <span class="price-original">¥${p.originalPrice}</span>
+                                </div>
+                                <a href="https://s.taobao.com/search?q=${encodeURIComponent(p.name)}" target="_blank" class="buy-btn">去购买</a>
+                            </div>
+                        </div>
                     </div>
                 `).join('');
             };
 
-            renderCards(currentMeals.breakfast, 'breakfastCards');
-            renderCards(currentMeals.lunch, 'lunchCards');
-            renderCards(currentMeals.dinner, 'dinnerCards');
+            renderCards(currentProducts.breakfast, 'breakfastCards');
+            renderCards(currentProducts.lunch, 'lunchCards');
+            renderCards(currentProducts.dinner, 'dinnerCards');
         }
 
         // 切换日期
@@ -759,9 +784,9 @@
             document.querySelectorAll('.week-day-btn').forEach((btn, i) => {
                 btn.classList.toggle('active', i === index);
             });
-            document.getElementById('dayTitle').textContent = days[index] + '食谱';
-            generateMeals();
-            renderMeals();
+            document.getElementById('dayTitle').textContent = days[index] + '外卖';
+            generateProducts();
+            renderProducts();
             saveData();
         }
 
@@ -770,8 +795,8 @@
             const btn = document.querySelector('.refresh-btn');
             btn.classList.add('spinning');
             setTimeout(() => btn.classList.remove('spinning'), 500);
-            generateMeals();
-            renderMeals();
+            generateProducts();
+            renderProducts();
         }
 
         // 更新显示
