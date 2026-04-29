@@ -547,6 +547,21 @@
                 </button>
             </div>
 
+            <!-- 今日饮食作用 -->
+            <div class="meal-desc" style="background: linear-gradient(135deg, #f0f4ff, #e8f5e9); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                <div style="font-size: 14px; font-weight: 700; color: #667eea; margin-bottom: 8px; display: flex; align-items: center; gap: 5px;">
+                    <span>📋</span> 今日饮食作用
+                </div>
+                <div style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;" id="mealDesc">
+                    高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="mealTags">
+                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">🔥 燃脂</span>
+                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">💪 高蛋白</span>
+                    <span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">🥗 低卡</span>
+                </div>
+            </div>
+
             <!-- 早餐建议 -->
             <div class="meal-time">
                 <div class="meal-time-header">
@@ -660,6 +675,15 @@
 
         const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
+        // 饮食作用数据
+        const mealDescs = [
+            { text: '高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。', tags: ['🔥 燃脂', '💪 高蛋白', '🥗 低卡'] },
+            { text: '控糖维稳食谱，低GI食物组合，平稳血糖不犯困，适合上班族和学生党。', tags: ['🍬 控糖', '🧠 提神', '📊 稳血糖'] },
+            { text: '清肠排毒组合，高纤维食物促进肠道蠕动，帮助噗噗通畅，改善便秘。', tags: ['🌿 排毒', '🌀 清肠', '✨ 轻盈'] },
+            { text: '去水肿配方，高钾低钠食物帮助排出多余水分，让脸小一圈。', tags: ['💧 排水肿', '😊 瘦脸', '⚡ 活力'] },
+            { text: '均衡营养组合，蛋白质碳水脂肪比例均衡，适合日常健康饮食。', tags: ['⚖️ 均衡', '🌈 营养', '💚 健康'] }
+        ];
+
         // 外卖商品数据池
         const productPool = {
             breakfast: [
@@ -714,6 +738,11 @@
             currentProducts.breakfast = getRandomItems(productPool.breakfast, 2);
             currentProducts.lunch = getRandomItems(productPool.lunch, 3);
             currentProducts.dinner = getRandomItems(productPool.dinner, 2);
+
+            // 更新饮食作用
+            const desc = mealDescs[Math.floor(Math.random() * mealDescs.length)];
+            document.getElementById('mealDesc').textContent = desc.text;
+            document.getElementById('mealTags').innerHTML = desc.tags.map(t => `<span style="font-size: 11px; padding: 4px 10px; background: white; border-radius: 12px; color: #667eea; font-weight: 600;">${t}</span>`).join('');
         }
 
         // 渲染商品列表
