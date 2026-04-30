@@ -895,17 +895,35 @@
             <div class="checkin-section">
                 <!-- 打卡按钮 -->
                 <div class="checkin-buttons">
-                    <button class="checkin-btn-large milktea" onclick="doCheckin('milktea')">
+                    <button class="checkin-btn-large milktea"
+                        onclick="if(!isLongPress) doCheckin('milktea')"
+                        onmousedown="startLongPress('milktea')"
+                        onmouseup="cancelLongPress()"
+                        onmouseleave="cancelLongPress()"
+                        ontouchstart="startLongPress('milktea')"
+                        ontouchend="cancelLongPress()">
                         <span class="checkin-icon">🧋</span>
                         <span class="checkin-label">喝奶茶</span>
                         <span class="checkin-count" id="todayMilktea">0</span>
                     </button>
-                    <button class="checkin-btn-large water" onclick="doCheckin('water')">
+                    <button class="checkin-btn-large water"
+                        onclick="if(!isLongPress) doCheckin('water')"
+                        onmousedown="startLongPress('water')"
+                        onmouseup="cancelLongPress()"
+                        onmouseleave="cancelLongPress()"
+                        ontouchstart="startLongPress('water')"
+                        ontouchend="cancelLongPress()">
                         <span class="checkin-icon">💧</span>
                         <span class="checkin-label">喝水</span>
                         <span class="checkin-count" id="todayWater">0ml</span>
                     </button>
-                    <button class="checkin-btn-large pupu" onclick="doCheckin('pupu')">
+                    <button class="checkin-btn-large pupu"
+                        onclick="if(!isLongPress) doCheckin('pupu')"
+                        onmousedown="startLongPress('pupu')"
+                        onmouseup="cancelLongPress()"
+                        onmouseleave="cancelLongPress()"
+                        ontouchstart="startLongPress('pupu')"
+                        ontouchend="cancelLongPress()">
                         <span class="checkin-icon">💩</span>
                         <span class="checkin-label">噗噗</span>
                         <span class="checkin-count" id="todayPupu">0</span>
@@ -954,7 +972,6 @@
                     </div>
                 </div>
                 <button class="action-btn share-action-btn" onclick="showShareImage()">📤 分享打卡</button>
-                <button class="reset-btn" onclick="resetWeek()">🔄 重置本周</button>
             </div>
 
             <!-- 分享图片弹窗 -->
@@ -1177,17 +1194,58 @@
             renderMeals();
         }
 
+        // 长按定时器
+        let longPressTimer;
+        let isLongPress = false;
+
+        // 开始长按
+        function startLongPress(type) {
+            isLongPress = false;
+            longPressTimer = setTimeout(() => {
+                isLongPress = true;
+                doCheckin(type, true);
+                // 震动反馈（如果支持）
+                if (navigator.vibrate) navigator.vibrate(50);
+            }, 400);
+        }
+
+        // 取消长按
+        function cancelLongPress() {
+            clearTimeout(longPressTimer);
+        }
+
         // 打卡
-        function doCheckin(type) {
+        function doCheckin(type, isDecrease = false) {
             if (type === 'milktea') {
-                data.milktea[data.currentDay]++;
-                showFeedback('🧋');
+                if (isDecrease) {
+                    if (data.milktea[data.currentDay] > 0) {
+                        data.milktea[data.currentDay]--;
+                        showFeedback('➖');
+                    }
+                } else {
+                    data.milktea[data.currentDay]++;
+                    showFeedback('🧋');
+                }
             } else if (type === 'water') {
-                data.water[data.currentDay] += 150;
-                showFeedback('💧');
+                if (isDecrease) {
+                    if (data.water[data.currentDay] >= 150) {
+                        data.water[data.currentDay] -= 150;
+                        showFeedback('➖');
+                    }
+                } else {
+                    data.water[data.currentDay] += 150;
+                    showFeedback('💧');
+                }
             } else if (type === 'pupu') {
-                data.pupu[data.currentDay]++;
-                showFeedback('💩');
+                if (isDecrease) {
+                    if (data.pupu[data.currentDay] > 0) {
+                        data.pupu[data.currentDay]--;
+                        showFeedback('➖');
+                    }
+                } else {
+                    data.pupu[data.currentDay]++;
+                    showFeedback('💩');
+                }
             }
             saveData();
             renderWeekTables();
@@ -1360,19 +1418,6 @@
         // 保存图片
         function saveImage() {
             alert('📱 请手动截图保存\n\n提示：同时按住电源键和音量键即可截图');
-        }
-
-        // 重置本周
-        function resetWeek() {
-            if (confirm('确定重置本周所有打卡数据？')) {
-                data.milktea = [0, 0, 0, 0, 0, 0, 0];
-                data.water = [0, 0, 0, 0, 0, 0, 0];
-                data.pupu = [0, 0, 0, 0, 0, 0, 0];
-                saveData();
-                renderWeekTables();
-                updateTodayStats();
-                updateTotalStats();
-            }
         }
 
         // 显示反馈
