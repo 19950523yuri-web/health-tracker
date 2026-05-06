@@ -765,6 +765,86 @@
             border: 1px solid rgba(255,255,255,0.3);
         }
 
+        /* 新手引导 */
+        .onboarding-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .onboarding-overlay.active {
+            display: flex;
+        }
+
+        .onboarding-spotlight {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 120px;
+            background: transparent;
+            border-radius: 20px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+        }
+
+        .onboarding-content {
+            position: relative;
+            z-index: 1000;
+            text-align: center;
+            color: white;
+            margin-top: 180px;
+        }
+
+        .onboarding-hint {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px 35px;
+            color: #333;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .finger-animation {
+            font-size: 50px;
+            margin-bottom: 15px;
+            animation: tapPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes tapPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(1.1); }
+        }
+
+        .onboarding-text {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .onboarding-text p {
+            margin: 5px 0;
+            font-weight: 600;
+        }
+
+        .onboarding-skip {
+            font-size: 14px;
+            opacity: 0.8;
+            animation: fadePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes fadePulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
         /* 底部导航 */
         .bottom-nav {
             position: fixed;
@@ -947,6 +1027,21 @@
                     <div class="week-table-title">💩 本周噗噗记录</div>
                     <div class="week-table" id="pupuWeekTable"></div>
                 </div>
+
+                <!-- 新手引导 -->
+                <div class="onboarding-overlay" id="onboardingOverlay" onclick="closeOnboarding()">
+                    <div class="onboarding-spotlight"></div>
+                    <div class="onboarding-content">
+                        <div class="onboarding-hint">
+                            <div class="finger-animation">👆</div>
+                            <div class="onboarding-text">
+                                <p>点击 = 打卡 ✅</p>
+                                <p>长按 = 撤销 ➖</p>
+                            </div>
+                        </div>
+                        <div class="onboarding-skip">点击任意位置开始</div>
+                    </div>
+                </div>
             </div>
 
             <!-- 分享卡片 -->
@@ -1117,6 +1212,33 @@
             renderWeekTables();
             updateTodayStats();
             updateTotalStats();
+
+            // 检查是否需要显示新手引导
+            checkOnboarding();
+        }
+
+        // 检查新手引导
+        function checkOnboarding() {
+            const hasSeenOnboarding = localStorage.getItem('healthTrackerOnboarding');
+            if (!hasSeenOnboarding) {
+                // 延迟显示，确保页面已渲染
+                setTimeout(() => {
+                    // 切换到打卡tab显示引导
+                    switchTab('checkin');
+                    document.querySelectorAll('.nav-item')[0].classList.remove('active');
+                    document.querySelectorAll('.nav-item')[1].classList.add('active');
+                    document.getElementById('pageTitle').textContent = '✅ 健康打卡';
+
+                    // 显示引导
+                    document.getElementById('onboardingOverlay').classList.add('active');
+                }, 500);
+            }
+        }
+
+        // 关闭新手引导
+        function closeOnboarding() {
+            document.getElementById('onboardingOverlay').classList.remove('active');
+            localStorage.setItem('healthTrackerOnboarding', 'true');
         }
 
         // 切换Tab
