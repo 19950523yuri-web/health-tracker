@@ -773,10 +773,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 999;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding-top: 120px;
         }
 
         .onboarding-overlay.active {
@@ -785,14 +786,15 @@
 
         .onboarding-spotlight {
             position: absolute;
-            top: 50%;
+            top: 120px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 120px;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 380px;
+            height: 160px;
             background: transparent;
             border-radius: 20px;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
         }
 
         .onboarding-content {
@@ -800,7 +802,7 @@
             z-index: 1000;
             text-align: center;
             color: white;
-            margin-top: 180px;
+            margin-top: 200px;
         }
 
         .onboarding-hint {
