@@ -1224,9 +1224,7 @@
                 // 延迟显示，确保页面已渲染
                 setTimeout(() => {
                     // 切换到打卡tab显示引导
-                    switchTab('checkin');
-                    document.querySelectorAll('.nav-item')[0].classList.remove('active');
-                    document.querySelectorAll('.nav-item')[1].classList.add('active');
+                    switchTab('checkin', 1);
                     document.getElementById('pageTitle').textContent = '✅ 健康打卡';
 
                     // 显示引导
@@ -1242,12 +1240,18 @@
         }
 
         // 切换Tab
-        function switchTab(tab) {
+        function switchTab(tab, navIndex = null) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
             document.getElementById(`tab-${tab}`).classList.add('active');
-            event.currentTarget.classList.add('active');
+
+            // 如果传了navIndex，直接激活对应导航；否则使用event
+            if (navIndex !== null) {
+                document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+            } else if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
 
             document.getElementById('pageTitle').textContent = tab === 'food' ? '🍱 本周健康食谱' : '✅ 健康打卡';
         }
