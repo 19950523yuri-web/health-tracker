@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>健康食谱与打卡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>逢8楼送免单 - 盖楼大作战</title>
     <style>
         * {
             margin: 0;
@@ -11,1566 +11,783 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-attachment: fixed;
-            padding-bottom: 80px;
-            min-height: 100vh;
+            background: #f5f5f5;
+            height: 100%;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 420px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: 15px;
-        }
-
-        h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 15px;
-            font-size: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        /* Tab内容 */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* ========== 食谱Tab ========== */
-        .week-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .week-days {
-            display: flex;
-            gap: 6px;
-        }
-
-        .week-day-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50%;
-            font-size: 13px;
-            font-weight: 600;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .week-day-btn.active {
-            background: rgba(102, 126, 234, 0.9);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .meal-section {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .refresh-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 15px;
-            border: none;
-            background: rgba(240, 244, 255, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: #667eea;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        .meal-desc {
-            background: rgba(240, 244, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .meal-desc-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .meal-desc-text {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .meal-desc-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .meal-tag {
-            font-size: 11px;
-            padding: 4px 10px;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border-radius: 12px;
-            color: #667eea;
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .meal-time {
-            margin-bottom: 20px;
-        }
-
-        .meal-time-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .meal-time-icon {
-            font-size: 22px;
-        }
-
-        .meal-time-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        /* 商品列表 */
-        .food-list {
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            background: #f5f5f5;
         }
 
-        .product-item {
+        /* 活动规则 - 顶部小条 */
+        .rules-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 16px;
+            color: white;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .rules-bar strong {
+            color: #ffe082;
+        }
+
+        /* 免单奖品卡片 */
+        .prize-card {
+            background: white;
+            margin: 10px 12px;
+            border-radius: 12px;
+            padding: 12px;
             display: flex;
             gap: 12px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            flex-shrink: 0;
         }
 
-        .product-item:active {
-            background: rgba(255, 255, 255, 0.8);
-            transform: scale(0.98);
-        }
-
-        .product-image {
-            width: 80px;
-            height: 80px;
-            min-width: 80px;
-            background: linear-gradient(135deg, #f5f7fa, #e4e8ec);
-            border-radius: 8px;
+        .prize-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            position: relative;
+            font-size: 36px;
+            flex-shrink: 0;
         }
 
-        .product-sold {
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            background: #ff5722;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .product-info {
+        .prize-info {
             flex: 1;
-            min-width: 0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
         }
 
-        .product-title-line {
+        .prize-label {
+            font-size: 11px;
+            color: #f5576c;
+            font-weight: 600;
+            margin-bottom: 3px;
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-bottom: 6px;
-            font-size: 14px;
-            line-height: 1.4;
         }
 
-        .product-shop {
-            color: #666;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .divider {
-            color: #ccc;
-        }
-
-        .product-name {
-            color: #333;
+        .prize-name {
+            font-size: 15px;
             font-weight: 600;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            color: #333;
+            margin-bottom: 3px;
         }
 
-        .product-tags {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-        }
-
-        .product-tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            background: #f0f4ff;
-            color: #667eea;
-            border-radius: 4px;
-        }
-
-        .product-tag.calorie {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .product-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product-price-row {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .price-current {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ff5722;
-        }
-
-        .price-current::before {
-            content: '¥';
-            font-size: 12px;
-        }
-
-        .price-original {
+        .prize-price {
             font-size: 12px;
             color: #999;
             text-decoration: line-through;
+            margin-bottom: 3px;
         }
 
-        .delivery-time {
-            font-size: 12px;
-            color: #999;
-        }
-
-        /* ========== 打卡Tab ========== */
-        .checkin-section {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .checkin-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .checkin-btn-large {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.15s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 8px rgba(0,0,0,0.15);
-            position: relative;
-            top: 0;
-        }
-
-        .checkin-btn-large.milktea {
-            background: rgba(212, 163, 115, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px rgba(139, 98, 57, 0.3), inset 0 2px 4px rgba(255,255,255,0.2);
-        }
-
-        .checkin-btn-large.water {
-            background: rgba(79, 195, 247, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px rgba(1, 87, 155, 0.3), inset 0 2px 4px rgba(255,255,255,0.2);
-        }
-
-        .checkin-btn-large.pupu {
-            background: rgba(141, 110, 99, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px rgba(62, 39, 35, 0.3), inset 0 2px 4px rgba(255,255,255,0.2);
-        }
-
-        .checkin-btn-large:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .checkin-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-
-        .checkin-label {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .checkin-count {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        /* 周表格 */
-        .week-table-section {
-            margin-bottom: 20px;
-        }
-
-        .week-table-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .week-table {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-
-        .week-day-cell {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .prize-desc {
             font-size: 11px;
-            color: #999;
-            position: relative;
+            color: #e17055;
+            font-weight: 500;
         }
 
-        .week-day-cell.has-data {
-            background: rgba(255, 243, 224, 0.8);
-            border-color: rgba(255, 183, 77, 0.5);
+        /* 主游戏区域 - 自适应 */
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            margin: 0 12px 12px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-height: 0;
         }
 
-        .week-day-cell .day-label {
-            font-size: 10px;
+        /* 状态栏 */
+        .status-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .status-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .status-label {
+            font-size: 11px;
+            opacity: 0.9;
             margin-bottom: 2px;
         }
 
-        .week-day-cell .day-icon {
-            font-size: 24px;
-            line-height: 1;
-        }
-
-        /* 分享卡片 */
-        .share-card {
-            background: rgba(102, 126, 234, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            color: white;
-            margin-bottom: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        }
-
-        .share-title {
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .share-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 15px;
-        }
-
-        .share-stat {
-            text-align: center;
-        }
-
-        .share-stat-icon {
-            font-size: 24px;
-        }
-
-        .share-stat-value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .share-stat-label {
-            font-size: 11px;
-            opacity: 0.9;
-        }
-
-        .share-water-bar {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .share-water-fill {
-            height: 100%;
-            background: #4fc3f7;
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
-
-        .share-water-text {
-            text-align: center;
-            font-size: 12px;
-        }
-
-        /* 分享图片弹窗 */
-        .share-image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .share-image-modal.active {
-            display: flex;
-        }
-
-        .share-image-content {
-            width: 100%;
-            max-width: 340px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .share-image-card {
-            background: rgba(102, 126, 234, 0.9);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            color: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .image-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .image-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .image-date {
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-        .record-section {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 8px;
-            margin-bottom: 6px;
-        }
-
-        .record-title {
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            opacity: 0.95;
-        }
-
-        .record-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .record-cell {
-            aspect-ratio: 1;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .record-cell.empty {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .record-day-label {
-            font-size: 8px;
-            color: #999;
-            margin-bottom: 1px;
-        }
-
-        .record-icon {
-            font-size: 16px;
-            line-height: 1;
-        }
-
-        .image-summary-section {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 16px;
-            padding: 15px;
-            color: #333;
-        }
-
-        .image-summary-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .image-summary-content {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .image-summary-item {
-            text-align: center;
-        }
-
-        .summary-icon {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .summary-text {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .summary-text strong {
-            color: #333;
+        .status-value {
             font-size: 18px;
             font-weight: 700;
         }
 
-        .image-footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 12px;
-            opacity: 0.8;
+        .status-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.3);
         }
 
-        .image-actions {
-            display: flex;
-            gap: 12px;
+        .next-lucky {
+            color: #ffe082;
         }
 
-        .image-action-btn {
+        /* 楼层建筑 - 可滚动区域 */
+        .building {
             flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .building::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .building::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+
+        .floor {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: white;
+            border: 2px solid #e8e8e8;
+            transition: all 0.3s;
+            animation: slideIn 0.3s ease-out;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floor.normal {
+            border-color: #e8e8e8;
+        }
+
+        .floor.lucky {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-color: #ffc107;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .floor-number-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .floor.normal .floor-number-badge {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .floor.lucky .floor-number-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .floor-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .floor-avatars {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar, .brand-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-right: -8px;
+            z-index: 1;
+        }
+
+        .brand-avatar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .floor-info {
+            margin-left: 6px;
+        }
+
+        .floor-owner {
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .floor-reward {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .floor.lucky .floor-reward {
+            color: #ff8f00;
+            font-weight: 600;
+        }
+
+        .lucky-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: white;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: auto;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        /* 底部操作区 */
+        .action-area {
+            background: white;
+            padding: 12px;
+            border-top: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        .user-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-selector::-webkit-scrollbar {
+            display: none;
+        }
+
+        .user-option {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            padding: 15px;
-            border: none;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
+            gap: 3px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 2px solid #e8e8e8;
             cursor: pointer;
             transition: all 0.2s;
-            border: 1px solid rgba(255,255,255,0.3);
+            min-width: 60px;
+            flex-shrink: 0;
         }
 
-        .image-action-btn span:first-child {
-            font-size: 24px;
+        .user-option:hover {
+            border-color: #667eea;
         }
 
-        .image-action-btn.wechat {
-            background: rgba(7, 193, 96, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
+        .user-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
         }
 
-        .image-action-btn.save {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: #333;
+        .user-option-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
-        .action-btn {
+        .user-option-name {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .build-btn {
             width: 100%;
             padding: 14px;
             border: none;
             border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 10px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .share-action-btn {
-            background: rgba(102, 126, 234, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .reset-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 235, 238, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: #c62828;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        /* 新手引导 */
-        .onboarding-overlay {
-            display: none;
+        .build-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .build-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 免单弹窗 */
+        .reward-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 90px;
-        }
-
-        .onboarding-overlay.active {
-            display: flex;
-        }
-
-        .onboarding-spotlight {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            height: 155px;
-            background: transparent;
-            border-radius: 20px;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
-        }
-
-        .onboarding-content {
-            position: absolute;
-            top: 190px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            text-align: center;
-            color: white;
-            width: 100%;
-        }
-
-        .onboarding-hint {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            padding: 20px 30px;
-            color: #333;
-            margin: 0 auto 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            display: inline-block;
-        }
-
-        .finger-animation {
-            font-size: 40px;
-            margin-bottom: 10px;
-            animation: tapPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes tapPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(0.9); }
-            75% { transform: scale(1.1); }
-        }
-
-        .onboarding-text {
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .onboarding-text p {
-            margin: 3px 0;
-            font-weight: 600;
-        }
-
-        .onboarding-skip {
-            font-size: 12px;
-            opacity: 0.8;
-            animation: fadePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes fadePulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* 底部导航 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 8px 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 420px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
+            background: rgba(0,0,0,0.7);
+            display: none;
             align-items: center;
-            padding: 5px 20px;
-            cursor: pointer;
-            color: #999;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active {
-            color: #667eea;
-        }
-
-        .nav-icon {
-            font-size: 24px;
-            margin-bottom: 2px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* 动画 */
-        .feedback-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 50px;
-            pointer-events: none;
-            animation: popupFloat 0.8s ease-out forwards;
+            justify-content: center;
             z-index: 1000;
+            padding: 20px;
         }
 
-        @keyframes popupFloat {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-            100% { opacity: 0; transform: translate(-50%, -70%) scale(1); }
+        .reward-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .reward-content {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+            animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .reward-icon {
+            font-size: 60px;
+            margin-bottom: 12px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .reward-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .reward-floor {
+            font-size: 16px;
+            color: #f5576c;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .reward-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .reward-avatars {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .reward-avatar-item {
+            text-align: center;
+        }
+
+        .reward-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .reward-avatar.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .reward-avatar.brand {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .reward-avatar-label {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .reward-close-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="pageTitle">🍱 本周健康食谱</h1>
+        <!-- 活动规则 -->
+        <div class="rules-bar">
+            <strong>活动规则：</strong>楼层号带<strong>8</strong>或是<strong>8的倍数</strong>，<strong>100%获得免单</strong>！
+        </div>
 
-        <!-- Tab 1: 食谱推荐 -->
-        <div class="tab-content active" id="tab-food">
-            <!-- 周导航 -->
-            <div class="week-nav">
-                <div class="week-days">
-                    <button class="week-day-btn active" onclick="selectDay(0)">一</button>
-                    <button class="week-day-btn" onclick="selectDay(1)">二</button>
-                    <button class="week-day-btn" onclick="selectDay(2)">三</button>
-                    <button class="week-day-btn" onclick="selectDay(3)">四</button>
-                    <button class="week-day-btn" onclick="selectDay(4)">五</button>
-                    <button class="week-day-btn" onclick="selectDay(5)">六</button>
-                    <button class="week-day-btn" onclick="selectDay(6)">日</button>
-                </div>
-            </div>
-
-            <!-- 今日食谱 -->
-            <div class="meal-section">
-                <div class="section-header">
-                    <div class="section-title" id="dayTitle">周一食谱</div>
-                    <button class="refresh-btn" onclick="refreshMeals()">🔄 换一换</button>
-                </div>
-
-                <div class="meal-desc">
-                    <div class="meal-desc-title">📋 今日饮食作用</div>
-                    <div class="meal-desc-text" id="mealDesc">高蛋白低脂组合，帮助提升代谢...</div>
-                    <div class="meal-desc-tags" id="mealTags">
-                        <span class="meal-tag">🔥 燃脂</span>
-                        <span class="meal-tag">💪 高蛋白</span>
-                    </div>
-                </div>
-
-                <div class="meal-time">
-                    <div class="meal-time-header">
-                        <span class="meal-time-icon">🌅</span>
-                        <span class="meal-time-title">早餐建议</span>
-                    </div>
-                    <div class="food-list" id="breakfastList"></div>
-                </div>
-
-                <div class="meal-time">
-                    <div class="meal-time-header">
-                        <span class="meal-time-icon">☀️</span>
-                        <span class="meal-time-title">午餐建议</span>
-                    </div>
-                    <div class="food-list" id="lunchList"></div>
-                </div>
-
-                <div class="meal-time">
-                    <div class="meal-time-header">
-                        <span class="meal-time-icon">🌙</span>
-                        <span class="meal-time-title">晚餐建议</span>
-                    </div>
-                    <div class="food-list" id="dinnerList"></div>
-                </div>
+        <!-- 本期免单奖品 -->
+        <div class="prize-card">
+            <div class="prize-image">🍜</div>
+            <div class="prize-info">
+                <div class="prize-label">🎁 本期免单奖品</div>
+                <div class="prize-name">招牌红烧牛肉面</div>
+                <div class="prize-price">原价 ¥38</div>
+                <div class="prize-desc">🎉 中奖楼层用户头像永久展示 + 免单</div>
             </div>
         </div>
 
-        <!-- Tab 2: 打卡 -->
-        <div class="tab-content" id="tab-checkin">
-            <div class="checkin-section">
-                <!-- 打卡按钮 -->
-                <div class="checkin-buttons">
-                    <button class="checkin-btn-large milktea"
-                        onclick="if(!isLongPress) doCheckin('milktea')"
-                        onmousedown="startLongPress('milktea')"
-                        onmouseup="cancelLongPress()"
-                        onmouseleave="cancelLongPress()"
-                        ontouchstart="startLongPress('milktea')"
-                        ontouchend="cancelLongPress()">
-                        <span class="checkin-icon">🧋</span>
-                        <span class="checkin-label">喝奶茶</span>
-                        <span class="checkin-count" id="todayMilktea">0</span>
-                    </button>
-                    <button class="checkin-btn-large water"
-                        onclick="if(!isLongPress) doCheckin('water')"
-                        onmousedown="startLongPress('water')"
-                        onmouseup="cancelLongPress()"
-                        onmouseleave="cancelLongPress()"
-                        ontouchstart="startLongPress('water')"
-                        ontouchend="cancelLongPress()">
-                        <span class="checkin-icon">💧</span>
-                        <span class="checkin-label">喝水</span>
-                        <span class="checkin-count" id="todayWater">0ml</span>
-                    </button>
-                    <button class="checkin-btn-large pupu"
-                        onclick="if(!isLongPress) doCheckin('pupu')"
-                        onmousedown="startLongPress('pupu')"
-                        onmouseup="cancelLongPress()"
-                        onmouseleave="cancelLongPress()"
-                        ontouchstart="startLongPress('pupu')"
-                        ontouchend="cancelLongPress()">
-                        <span class="checkin-icon">💩</span>
-                        <span class="checkin-label">噗噗</span>
-                        <span class="checkin-count" id="todayPupu">0</span>
-                    </button>
+        <!-- 主游戏区域 -->
+        <div class="game-area">
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-label">下一个中奖楼层</div>
+                    <div class="status-value next-lucky" id="nextLuckyFloor">8</div>
                 </div>
-
-                <!-- 奶茶周表 -->
-                <div class="week-table-section">
-                    <div class="week-table-title">🧋 本周奶茶记录</div>
-                    <div class="week-table" id="milkteaWeekTable"></div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <div class="status-label">已中奖楼层</div>
+                    <div class="status-value" id="luckyFloorsCount">0</div>
                 </div>
-
-                <!-- 喝水周表 -->
-                <div class="week-table-section">
-                    <div class="week-table-title">💧 本周喝水记录</div>
-                    <div class="week-table" id="waterWeekTable"></div>
-                </div>
-
-                <!-- 噗噗周表 -->
-                <div class="week-table-section">
-                    <div class="week-table-title">💩 本周噗噗记录</div>
-                    <div class="week-table" id="pupuWeekTable"></div>
-                </div>
-
-                <!-- 新手引导 -->
-                <div class="onboarding-overlay" id="onboardingOverlay" onclick="closeOnboarding()">
-                    <div class="onboarding-spotlight"></div>
-                    <div class="onboarding-content">
-                        <div class="onboarding-hint">
-                            <div class="finger-animation">👆</div>
-                            <div class="onboarding-text">
-                                <p>点击 = 打卡 ✅</p>
-                                <p>长按 = 撤销 ➖</p>
-                            </div>
-                        </div>
-                        <div class="onboarding-skip">点击任意位置开始</div>
-                    </div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <div class="status-label">幸运儿</div>
+                    <div class="status-value" id="luckyUsersCount">0</div>
                 </div>
             </div>
 
-            <!-- 分享卡片 -->
-            <div class="checkin-section">
-                <div class="share-card">
-                    <div class="share-title">📸 本周打卡总结</div>
-                    <div class="share-stats">
-                        <div class="share-stat">
-                            <div class="share-stat-icon">🧋</div>
-                            <div class="share-stat-value" id="totalMilktea">0</div>
-                            <div class="share-stat-label">奶茶</div>
-                        </div>
-                        <div class="share-stat">
-                            <div class="share-stat-icon">💧</div>
-                            <div class="share-stat-value" id="totalWater">0</div>
-                            <div class="share-stat-label">喝水(L)</div>
-                        </div>
-                        <div class="share-stat">
-                            <div class="share-stat-icon">💩</div>
-                            <div class="share-stat-value" id="totalPupu">0</div>
-                            <div class="share-stat-label">噗噗</div>
-                        </div>
-                    </div>
+            <!-- 楼层建筑 -->
+            <div class="building" id="building">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏗️</div>
+                    <div class="empty-state-text">还没有楼层，快来盖第一层楼吧！</div>
                 </div>
-                <button class="action-btn share-action-btn" onclick="showShareImage()">📤 分享打卡</button>
             </div>
 
-            <!-- 分享图片弹窗 -->
-            <div class="share-image-modal" id="shareImageModal" onclick="closeShareImage(event)">
-                <div class="share-image-content" onclick="event.stopPropagation()">
-                    <!-- 生成的分享图片 -->
-                    <div class="share-image-card" id="shareImageCard">
-                        <div class="image-header">
-                            <div class="image-title">📸 本周健康打卡</div>
-                            <div class="image-date" id="imageDate">1.1-1.7</div>
-                        </div>
-
-                        <!-- 奶茶记录 -->
-                        <div class="record-section">
-                            <div class="record-title">🧋 本周奶茶记录</div>
-                            <div class="record-grid" id="milkteaRecordGrid"></div>
-                        </div>
-
-                        <!-- 喝水记录 -->
-                        <div class="record-section">
-                            <div class="record-title">💧 本周喝水记录</div>
-                            <div class="record-grid" id="waterRecordGrid"></div>
-                        </div>
-
-                        <!-- 噗噗记录 -->
-                        <div class="record-section">
-                            <div class="record-title">💩 本周噗噗记录</div>
-                            <div class="record-grid" id="pupuRecordGrid"></div>
-                        </div>
-
-                        <!-- 本周总结 -->
-                        <div class="image-summary-section">
-                            <div class="image-summary-title">📊 本周总结</div>
-                            <div class="image-summary-content">
-                                <div class="image-summary-item">
-                                    <span class="summary-icon">🧋</span>
-                                    <span class="summary-text">奶茶 <strong id="imageMilktea">0</strong> 杯</span>
-                                </div>
-                                <div class="image-summary-item">
-                                    <span class="summary-icon">💧</span>
-                                    <span class="summary-text">喝水 <strong id="imageWater">0</strong> L</span>
-                                </div>
-                                <div class="image-image-summary-item">
-                                    <span class="summary-icon">💩</span>
-                                    <span class="summary-text">噗噗 <strong id="imagePupu">0</strong> 次</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="image-footer">健康生活，从每一餐开始 💪</div>
-                    </div>
-
-                    <!-- 底部按钮 -->
-                    <div class="image-actions">
-                        <button class="image-action-btn wechat" onclick="shareToWechat()">
-                            <span>💬</span>
-                            <span>微信分享</span>
-                        </button>
-                        <button class="image-action-btn save" onclick="saveImage()">
-                            <span>💾</span>
-                            <span>保存图片</span>
-                        </button>
-                    </div>
+            <!-- 底部操作区 -->
+            <div class="action-area">
+                <div class="user-selector" id="userSelector">
+                    <!-- 动态生成用户选项 -->
                 </div>
+                <button class="build-btn" id="buildBtn" onclick="buildFloor()">
+                    🏗️ 下单盖楼
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 底部导航 -->
-    <div class="bottom-nav">
-        <div class="nav-container">
-            <div class="nav-item active" onclick="switchTab('food')">
-                <span class="nav-icon">🍱</span>
-                <span class="nav-label">食谱</span>
+    <!-- 免单奖励弹窗 -->
+    <div class="reward-modal" id="rewardModal">
+        <div class="reward-content">
+            <div class="reward-icon">🎉</div>
+            <div class="reward-title">恭喜你获得免单！</div>
+            <div class="reward-floor" id="rewardFloor">第8层</div>
+            <div class="reward-desc">
+                你的头像和商家品牌头像将永久展示在这座楼上！
             </div>
-            <div class="nav-item" onclick="switchTab('checkin')">
-                <span class="nav-icon">✅</span>
-                <span class="nav-label">打卡</span>
+            <div class="reward-avatars">
+                <div class="reward-avatar-item">
+                    <div class="reward-avatar user" id="rewardUserAvatar">👤</div>
+                    <div class="reward-avatar-label">你的头像</div>
+                </div>
+                <div class="reward-avatar-item">
+                    <div class="reward-avatar brand">🍜</div>
+                    <div class="reward-avatar-label">品牌头像</div>
+                </div>
             </div>
+            <button class="reward-close-btn" onclick="closeReward()">太棒了！</button>
         </div>
     </div>
 
     <script>
-        // 数据
-        let data = {
-            currentDay: 0,
-            // 每日记录 [周一,周二,周三,周四,周五,周六,周日]
-            milktea: [0, 0, 0, 0, 0, 0, 0],
-            water: [0, 0, 0, 0, 0, 0, 0],
-            pupu: [0, 0, 0, 0, 0, 0, 0]
-        };
-
-        const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-        const dayLabels = ['一', '二', '三', '四', '五', '六', '日'];
-
-        // 奶茶图标池
-        const milkteaIcons = ['🧋', '🥤', '🍵', '☕', '🥛'];
-        const milkteaColors = ['#8B4513', '#D2691E', '#CD853F', '#A0522D', '#6B4423'];
-
-        // 食谱数据池
-        const productPool = {
-            breakfast: [
-                { emoji: '🥪', name: '全麦三明治+无糖豆浆套餐', shop: '轻食主义', price: 18.8, originalPrice: 28, deliveryTime: '30分钟', sold: '月售1200+', cal: '320卡', tags: ['高膳食纤维', '低脂轻负担'] },
-                { emoji: '🥚', name: '水煮蛋2个+燕麦粥', shop: '早餐工坊', price: 12.9, originalPrice: 18, deliveryTime: '25分钟', sold: '月售800+', cal: '280卡', tags: ['饱腹感强', '低GI'] },
-                { emoji: '🥣', name: '杂粮煎饼果子（无油条）', shop: '老北京煎饼', price: 15, originalPrice: 20, deliveryTime: '35分钟', sold: '月售2000+', cal: '350卡', tags: ['粗粮主食', '控糖友好'] },
-                { emoji: '🥑', name: '牛油果鸡蛋沙拉', shop: '健康轻食', price: 28.8, originalPrice: 38, deliveryTime: '40分钟', sold: '月售500+', cal: '380卡', tags: ['优质脂肪', '高蛋白'] },
-                { emoji: '🌾', name: '燕麦酸奶水果碗', shop: '酸奶星球', price: 22, originalPrice: 32, deliveryTime: '30分钟', sold: '月售1500+', cal: '300卡', tags: ['益生菌', '低脂轻食'] },
-                { emoji: '🥛', name: '无糖豆浆+蔬菜包子2个', shop: '永和豆浆', price: 14.5, originalPrice: 20, deliveryTime: '25分钟', sold: '月售3000+', cal: '310卡', tags: ['植物蛋白', '传统早餐'] }
-            ],
-            lunch: [
-                { emoji: '🍱', name: '香煎鸡胸肉+糙米饭+西兰花', shop: '轻食便当', price: 32.8, originalPrice: 45, deliveryTime: '35分钟', sold: '月售2500+', cal: '480卡', tags: ['高蛋白', '增肌减脂'] },
-                { emoji: '🐟', name: '清蒸鲈鱼+杂粮饭+时蔬', shop: '蒸鲜阁', price: 45, originalPrice: 58, deliveryTime: '40分钟', sold: '月售1800+', cal: '520卡', tags: ['优质蛋白', '补脑益智'] },
-                { emoji: '🦐', name: '白灼虾套餐（12只）+蔬菜', shop: '海鲜饭堂', price: 52, originalPrice: 68, deliveryTime: '45分钟', sold: '月售900+', cal: '450卡', tags: ['高蛋白', '低脂低卡'] },
-                { emoji: '🥦', name: '西兰花炒牛肉+紫薯', shop: '健身厨房', price: 38.8, originalPrice: 48, deliveryTime: '38分钟', sold: '月售1600+', cal: '490卡', tags: ['高铁补血', '抗氧化'] },
-                { emoji: '🍲', name: '番茄鸡蛋荞麦面', shop: '面食记', price: 22, originalPrice: 28, deliveryTime: '30分钟', sold: '月售2200+', cal: '420卡', tags: ['番茄红素', '饱腹主食'] },
-                { emoji: '🥗', name: '凯撒沙拉+烤鸡胸', shop: '沙拉实验室', price: 35, originalPrice: 45, deliveryTime: '32分钟', sold: '月售1400+', cal: '380卡', tags: ['刷脂神器', '清爽解腻'] }
-            ],
-            dinner: [
-                { emoji: '🥗', name: '混合蔬菜沙拉+油醋汁', shop: '轻食沙拉', price: 25, originalPrice: 32, deliveryTime: '30分钟', sold: '月售2000+', cal: '180卡', tags: ['超低卡', '膳食纤维'] },
-                { emoji: '🐟', name: '香煎鳕鱼+芦笋', shop: '海鲜轻食', price: 48, originalPrice: 62, deliveryTime: '40分钟', sold: '月售700+', cal: '320卡', tags: ['Omega-3', '低脂高蛋白'] },
-                { emoji: '🥒', name: '拍黄瓜+凉拌木耳+小米粥', shop: '凉拌菜馆', price: 18.8, originalPrice: 25, deliveryTime: '25分钟', sold: '月售1500+', cal: '220卡', tags: ['清肠胃', '低卡爽口'] },
-                { emoji: '🥦', name: '蒜蓉西兰花+蒸蛋羹', shop: '蒸菜馆', price: 22, originalPrice: 28, deliveryTime: '28分钟', sold: '月售1100+', cal: '240卡', tags: ['抗氧化', '嫩滑可口'] },
-                { emoji: '🍄', name: '金针菇肥牛（少油）', shop: '日韩料理', price: 38, originalPrice: 48, deliveryTime: '38分钟', sold: '月售2300+', cal: '350卡', tags: ['刷脂饱腹', '鲜香可口'] },
-                { emoji: '🦑', name: '爆炒鱿鱼圈+生菜', shop: '海鲜大排档', price: 35.8, originalPrice: 45, deliveryTime: '35分钟', sold: '月售900+', cal: '280卡', tags: ['高蛋白', '低卡美味'] }
-            ]
-        };
-
-        const mealDescs = [
-            { text: '高蛋白低脂组合，帮助提升代谢，控制热量摄入的同时保证饱腹感，适合减脂期食用。', tags: ['🔥 燃脂', '💪 高蛋白', '🥗 低卡'] },
-            { text: '控糖维稳食谱，低GI食物组合，平稳血糖不犯困，适合上班族和学生党。', tags: ['🍬 控糖', '🧠 提神', '📊 稳血糖'] },
-            { text: '清肠排毒组合，高纤维食物促进肠道蠕动，帮助噗噗通畅，改善便秘。', tags: ['🌿 排毒', '🌀 清肠', '✨ 轻盈'] },
-            { text: '去水肿配方，高钾低钠食物帮助排出多余水分，让脸小一圈。', tags: ['💧 排水肿', '😊 瘦脸', '⚡ 活力'] },
-            { text: '均衡营养组合，蛋白质碳水脂肪比例均衡，适合日常健康饮食。', tags: ['⚖️ 均衡', '🌈 营养', '💚 健康'] }
+        // 模拟用户数据
+        const mockUsers = [
+            { id: 1, name: '小明', avatar: '😎', color: '#667eea' },
+            { id: 2, name: '小红', avatar: '🥰', color: '#f5576c' },
+            { id: 3, name: '阿强', avatar: '🤠', color: '#4CAF50' },
+            { id: 4, name: '丽丽', avatar: '🌸', color: '#ff6b9d' },
+            { id: 5, name: '老王', avatar: '👴', color: '#ff9800' },
         ];
 
-        let currentMeals = { breakfast: [], lunch: [], dinner: [] };
+        // 商家信息
+        const merchant = {
+            name: '老王牛肉面',
+            avatar: '🍜',
+            color: '#f5576c'
+        };
+
+        // 游戏数据
+        let gameData = {
+            currentFloor: 1,
+            floors: [],
+            selectedUserId: 1
+        };
 
         // 初始化
         function init() {
             loadData();
-            generateMeals();
-            renderMeals();
-            renderWeekTables();
-            updateTodayStats();
-            updateTotalStats();
-
-            // 检查是否需要显示新手引导
-            checkOnboarding();
+            renderUserSelector();
+            renderBuilding();
+            updateUI();
         }
 
-        // 检查新手引导
-        function checkOnboarding() {
-            const hasSeenOnboarding = localStorage.getItem('healthTrackerOnboarding');
-            if (!hasSeenOnboarding) {
-                // 延迟显示，确保页面已渲染
-                setTimeout(() => {
-                    // 切换到打卡tab显示引导
-                    switchTab('checkin', 1);
-                    document.getElementById('pageTitle').textContent = '✅ 健康打卡';
+        // 判断是否是幸运楼层
+        function isLuckyFloor(floorNum) {
+            return floorNum.toString().includes('8') || floorNum % 8 === 0;
+        }
 
-                    // 显示引导
-                    document.getElementById('onboardingOverlay').classList.add('active');
-                }, 500);
+        // 获取下一个中奖楼层
+        function getNextLuckyFloor() {
+            let floor = gameData.currentFloor;
+            while (!isLuckyFloor(floor)) {
+                floor++;
             }
+            return floor;
         }
 
-        // 关闭新手引导
-        function closeOnboarding() {
-            document.getElementById('onboardingOverlay').classList.remove('active');
-            localStorage.setItem('healthTrackerOnboarding', 'true');
+        // 渲染用户选择器
+        function renderUserSelector() {
+            const container = document.getElementById('userSelector');
+            container.innerHTML = mockUsers.map(user => `
+                <div class="user-option ${user.id === gameData.selectedUserId ? 'selected' : ''}"
+                     onclick="selectUser(${user.id})">
+                    <div class="user-option-avatar" style="background: ${user.color}20; color: ${user.color}">
+                        ${user.avatar}
+                    </div>
+                    <div class="user-option-name">${user.name}</div>
+                </div>
+            `).join('');
         }
 
-        // 切换Tab
-        function switchTab(tab, navIndex = null) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        // 选择用户
+        function selectUser(userId) {
+            gameData.selectedUserId = userId;
+            renderUserSelector();
+        }
 
-            document.getElementById(`tab-${tab}`).classList.add('active');
+        // 获取当前用户
+        function getCurrentUser() {
+            return mockUsers.find(u => u.id === gameData.selectedUserId);
+        }
 
-            // 如果传了navIndex，直接激活对应导航；否则使用event
-            if (navIndex !== null) {
-                document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
-            } else if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
+        // 渲染楼层建筑
+        function renderBuilding() {
+            const container = document.getElementById('building');
+
+            if (gameData.floors.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏗️</div>
+                        <div class="empty-state-text">还没有楼层，快来盖第一层楼吧！</div>
+                    </div>
+                `;
+                return;
             }
 
-            document.getElementById('pageTitle').textContent = tab === 'food' ? '🍱 本周健康食谱' : '✅ 健康打卡';
-        }
+            // 倒序渲染，最新的楼层显示在上方
+            container.innerHTML = [...gameData.floors].reverse().map((floor) => {
+                const isLucky = isLuckyFloor(floor.number);
+                const user = mockUsers.find(u => u.id === floor.userId);
 
-        // 生成随机食谱
-        function generateMeals() {
-            const getRandom = (arr, count) => [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
-            currentMeals.breakfast = getRandom(productPool.breakfast, 2);
-            currentMeals.lunch = getRandom(productPool.lunch, 3);
-            currentMeals.dinner = getRandom(productPool.dinner, 2);
-
-            const desc = mealDescs[Math.floor(Math.random() * mealDescs.length)];
-            document.getElementById('mealDesc').textContent = desc.text;
-            document.getElementById('mealTags').innerHTML = desc.tags.map(t => `<span class="meal-tag">${t}</span>`).join('');
-        }
-
-        // 渲染食谱
-        function renderMeals() {
-            const renderList = (meals, containerId) => {
-                document.getElementById(containerId).innerHTML = meals.map(p => `
-                    <a href="https://s.taobao.com/search?q=${encodeURIComponent(p.name)}" target="_blank" class="product-item">
-                        <div class="product-image">${p.emoji}<span class="product-sold">${p.sold}</span></div>
-                        <div class="product-info">
-                            <div class="product-title-line">
-                                <span class="product-shop">${p.shop}</span>
-                                <span class="divider">｜</span>
-                                <span class="product-name">${p.name}</span>
-                            </div>
-                            <div class="product-tags">
-                                <span class="product-tag calorie">🔥 ${p.cal}</span>
-                                <span class="product-tag">🍽️ 可堂食</span>
-                                ${p.tags.map(t => `<span class="product-tag">${t}</span>`).join('')}
-                            </div>
-                            <div class="product-bottom">
-                                <div class="product-price-row">
-                                    <span class="price-current">${p.price}</span>
-                                    <span class="price-original">¥${p.originalPrice}</span>
+                return `
+                    <div class="floor ${isLucky ? 'lucky' : 'normal'}">
+                        <div class="floor-number-badge">${floor.number}</div>
+                        <div class="floor-content">
+                            <div class="floor-avatars">
+                                <div class="user-avatar" style="background: ${user.color}">
+                                    ${user.avatar}
                                 </div>
-                                <span class="delivery-time">🕐 ${p.deliveryTime}</span>
+                                <div class="brand-avatar">${merchant.avatar}</div>
+                            </div>
+                            <div class="floor-info">
+                                <div class="floor-owner">${user.name}</div>
+                                <div class="floor-reward">${isLucky ? '💰 获得免单奖励' : '参与盖楼'}</div>
                             </div>
                         </div>
-                    </a>
-                `).join('');
-            };
-            renderList(currentMeals.breakfast, 'breakfastList');
-            renderList(currentMeals.lunch, 'lunchList');
-            renderList(currentMeals.dinner, 'dinnerList');
+                        ${isLucky ? '<div class="lucky-badge">🎁 免单</div>' : ''}
+                    </div>
+                `;
+            }).join('');
         }
 
-        // 选择日期
-        function selectDay(index) {
-            data.currentDay = index;
-            document.querySelectorAll('.week-day-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
-            document.getElementById('dayTitle').textContent = days[index] + '食谱';
-            generateMeals();
-            renderMeals();
+        // 更新UI
+        function updateUI() {
+            const luckyFloors = gameData.floors.filter(f => isLuckyFloor(f.number));
+            const luckyUserIds = new Set(luckyFloors.map(f => f.userId));
+
+            document.getElementById('nextLuckyFloor').textContent = getNextLuckyFloor();
+            document.getElementById('luckyFloorsCount').textContent = luckyFloors.length;
+            document.getElementById('luckyUsersCount').textContent = luckyUserIds.size;
+        }
+
+        // 滚动到最新楼层（现在在顶部）
+        function scrollToLatest() {
+            const building = document.getElementById('building');
+            // 最新楼层在最上方，滚动到顶部
+            building.scrollTop = 0;
+        }
+
+        // 盖楼
+        function buildFloor() {
+            const user = getCurrentUser();
+            const floorNum = gameData.currentFloor;
+            const isLucky = isLuckyFloor(floorNum);
+
+            // 添加楼层
+            gameData.floors.push({
+                number: floorNum,
+                userId: user.id,
+                timestamp: Date.now()
+            });
+
+            gameData.currentFloor++;
+
+            // 更新UI
+            renderBuilding();
+            updateUI();
             saveData();
-        }
 
-        // 换一换
-        function refreshMeals() {
-            const btn = document.querySelector('.refresh-btn');
-            btn.style.transform = 'rotate(360deg)';
-            setTimeout(() => btn.style.transform = '', 500);
-            generateMeals();
-            renderMeals();
-        }
+            // 滚动到最新楼层（在顶部）
+            scrollToLatest();
 
-        // 长按定时器
-        let longPressTimer;
-        let isLongPress = false;
-
-        // 开始长按
-        function startLongPress(type) {
-            isLongPress = false;
-            longPressTimer = setTimeout(() => {
-                isLongPress = true;
-                doCheckin(type, true);
-                // 震动反馈（如果支持）
-                if (navigator.vibrate) navigator.vibrate(50);
-            }, 400);
-        }
-
-        // 取消长按
-        function cancelLongPress() {
-            clearTimeout(longPressTimer);
-        }
-
-        // 打卡
-        function doCheckin(type, isDecrease = false) {
-            if (type === 'milktea') {
-                if (isDecrease) {
-                    if (data.milktea[data.currentDay] > 0) {
-                        data.milktea[data.currentDay]--;
-                        showFeedback('➖');
-                    }
-                } else {
-                    data.milktea[data.currentDay]++;
-                    showFeedback('🧋');
-                }
-            } else if (type === 'water') {
-                if (isDecrease) {
-                    if (data.water[data.currentDay] >= 150) {
-                        data.water[data.currentDay] -= 150;
-                        showFeedback('➖');
-                    }
-                } else {
-                    data.water[data.currentDay] += 150;
-                    showFeedback('💧');
-                }
-            } else if (type === 'pupu') {
-                if (isDecrease) {
-                    if (data.pupu[data.currentDay] > 0) {
-                        data.pupu[data.currentDay]--;
-                        showFeedback('➖');
-                    }
-                } else {
-                    data.pupu[data.currentDay]++;
-                    showFeedback('💩');
-                }
-            }
-            saveData();
-            renderWeekTables();
-            updateTodayStats();
-            updateTotalStats();
-        }
-
-        // 渲染周表格
-        function renderWeekTables() {
-            const renderTable = (data, containerId, type) => {
-                const icons = {
-                    milktea: ['🧋', '🥤', '🧉', '🍶', '☕'],
-                    water: ['💧', '💦', '🌊', '💎', '🧊'],
-                    pupu: ['💩', '🚽', '🧻', '🚾', '💨']
-                };
-
-                document.getElementById(containerId).innerHTML = dayLabels.map((day, i) => {
-                    const count = data[i];
-                    const hasData = count > 0;
-                    let icon = '';
-
-                    if (hasData) {
-                        // 根据数量或日期选择不同图标
-                        const iconIndex = (i + count) % icons[type].length;
-                        icon = icons[type][iconIndex];
-                    }
-
-                    return `
-                        <div class="week-day-cell ${hasData ? 'has-data' : ''}" onclick="selectDayFromTable(${i})">
-                            <span class="day-label">${day}</span>
-                            ${hasData ? `<span class="day-icon">${icon}</span>` : ''}
-                        </div>
-                    `;
-                }).join('');
-            };
-
-            renderTable(data.milktea, 'milkteaWeekTable', 'milktea');
-            renderTable(data.water.map(w => w > 0 ? 1 : 0), 'waterWeekTable', 'water');
-            renderTable(data.pupu, 'pupuWeekTable', 'pupu');
-        }
-
-        // 从表格选择日期
-        function selectDayFromTable(index) {
-            data.currentDay = index;
-            document.querySelectorAll('.week-day-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
-            document.getElementById('dayTitle').textContent = days[index] + '食谱';
-            switchTab('food');
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
-            document.querySelectorAll('.nav-item')[1].classList.remove('active');
-        }
-
-        // 更新今日统计
-        function updateTodayStats() {
-            document.getElementById('todayMilktea').textContent = data.milktea[data.currentDay];
-            document.getElementById('todayWater').textContent = data.water[data.currentDay] + 'ml';
-            document.getElementById('todayPupu').textContent = data.pupu[data.currentDay];
-        }
-
-        // 更新本周总计
-        function updateTotalStats() {
-            document.getElementById('totalMilktea').textContent = data.milktea.reduce((a, b) => a + b, 0);
-            document.getElementById('totalWater').textContent = (data.water.reduce((a, b) => a + b, 0) / 1000).toFixed(1);
-            document.getElementById('totalPupu').textContent = data.pupu.reduce((a, b) => a + b, 0);
-        }
-
-        // 显示分享图片
-        function showShareImage() {
-            generateShareImage();
-            document.getElementById('shareImageModal').classList.add('active');
-        }
-
-        // 关闭分享图片
-        function closeShareImage(event) {
-            if (!event || event.target.id === 'shareImageModal') {
-                document.getElementById('shareImageModal').classList.remove('active');
+            // 如果是幸运楼层，显示奖励弹窗
+            if (isLucky) {
+                setTimeout(() => {
+                    showReward(floorNum, user);
+                }, 300);
             }
         }
 
-        // 生成分享图片内容
-        function generateShareImage() {
-            const dayLabels = ['一', '二', '三', '四', '五', '六', '日'];
-            const totalMilktea = data.milktea.reduce((a, b) => a + b, 0);
-            const totalWater = (data.water.reduce((a, b) => a + b, 0) / 1000).toFixed(1);
-            const totalPupu = data.pupu.reduce((a, b) => a + b, 0);
-
-            // 日期范围
-            const today = new Date();
-            const weekStart = new Date(today.getTime() - today.getDay() * 86400000);
-            const weekEnd = new Date(weekStart.getTime() + 6 * 86400000);
-            document.getElementById('imageDate').textContent =
-                `${weekStart.getMonth() + 1}.${weekStart.getDate()}-${weekEnd.getMonth() + 1}.${weekEnd.getDate()}`;
-
-            // 奶茶图标池
-            const milkteaIcons = ['🧉', '☕', '🥤', '🧋', '🍵'];
-            // 喝水图标池
-            const waterIcons = ['💧', '💦', '💎', '🔷', '🔹'];
-            // 噗噗图标池
-            const pupuIcons = ['🧻', '🚽', '🚾', '🧼', '🛁'];
-
-            // 生成奶茶记录网格
-            let milkteaHTML = '';
-            for (let i = 0; i < 7; i++) {
-                const count = data.milktea[i];
-                const hasData = count > 0;
-                const icon = hasData ? milkteaIcons[(i + count) % milkteaIcons.length] : '';
-                milkteaHTML += `
-                    <div class="record-cell ${!hasData ? 'empty' : ''}">
-                        <div class="record-day-label">${dayLabels[i]}</div>
-                        <div class="record-icon">${icon || ' '}</div>
-                    </div>
-                `;
-            }
-            document.getElementById('milkteaRecordGrid').innerHTML = milkteaHTML;
-
-            // 生成喝水记录网格
-            let waterHTML = '';
-            for (let i = 0; i < 7; i++) {
-                const count = data.water[i];
-                const hasData = count > 0;
-                const icon = hasData ? waterIcons[(i + Math.floor(count / 150)) % waterIcons.length] : '';
-                waterHTML += `
-                    <div class="record-cell ${!hasData ? 'empty' : ''}">
-                        <div class="record-day-label">${dayLabels[i]}</div>
-                        <div class="record-icon">${icon || ' '}</div>
-                    </div>
-                `;
-            }
-            document.getElementById('waterRecordGrid').innerHTML = waterHTML;
-
-            // 生成噗噗记录网格
-            let pupuHTML = '';
-            for (let i = 0; i < 7; i++) {
-                const count = data.pupu[i];
-                const hasData = count > 0;
-                const icon = hasData ? pupuIcons[(i + count) % pupuIcons.length] : '';
-                pupuHTML += `
-                    <div class="record-cell ${!hasData ? 'empty' : ''}">
-                        <div class="record-day-label">${dayLabels[i]}</div>
-                        <div class="record-icon">${icon || ' '}</div>
-                    </div>
-                `;
-            }
-            document.getElementById('pupuRecordGrid').innerHTML = pupuHTML;
-
-            // 设置统计数据
-            document.getElementById('imageMilktea').textContent = totalMilktea;
-            document.getElementById('imageWater').textContent = totalWater;
-            document.getElementById('imagePupu').textContent = totalPupu;
+        // 显示奖励弹窗
+        function showReward(floorNum, user) {
+            document.getElementById('rewardFloor').textContent = `第${floorNum}层`;
+            const avatarEl = document.getElementById('rewardUserAvatar');
+            avatarEl.textContent = user.avatar;
+            avatarEl.style.background = user.color;
+            document.getElementById('rewardModal').classList.add('show');
         }
 
-        // 微信分享
-        function shareToWechat() {
-            const totalMilktea = data.milktea.reduce((a, b) => a + b, 0);
-            const totalWater = data.water.reduce((a, b) => a + b, 0);
-            const totalPupu = data.pupu.reduce((a, b) => a + b, 0);
-
-            const text = `📸 本周健康打卡\n\n🧋 奶茶 ${totalMilktea} 杯\n💧 喝水 ${(totalWater / 1000).toFixed(1)} L\n💩 噗噗 ${totalPupu} 次\n\n坚持健康生活每一天！`;
-
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('文案已复制！快去微信粘贴分享吧 📤');
-                }).catch(() => {
-                    alert('复制失败，请手动截图分享');
-                });
-            } else {
-                alert('请手动截图分享');
-            }
+        // 关闭奖励弹窗
+        function closeReward() {
+            document.getElementById('rewardModal').classList.remove('show');
         }
 
-        // 保存图片
-        function saveImage() {
-            alert('📱 请手动截图保存\n\n提示：同时按住电源键和音量键即可截图');
-        }
-
-        // 显示反馈
-        function showFeedback(emoji) {
-            const popup = document.createElement('div');
-            popup.className = 'feedback-popup';
-            popup.textContent = emoji;
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 800);
-        }
-
-        // 保存加载
+        // 保存数据
         function saveData() {
-            localStorage.setItem('healthTrackerData', JSON.stringify(data));
+            localStorage.setItem('buildingGame', JSON.stringify(gameData));
         }
 
+        // 加载数据
         function loadData() {
-            const saved = localStorage.getItem('healthTrackerData');
-            if (saved) data = { ...data, ...JSON.parse(saved) };
+            const saved = localStorage.getItem('buildingGame');
+            if (saved) {
+                gameData = JSON.parse(saved);
+            }
         }
 
         // 启动
         init();
+
     </script>
 </body>
 </html>
